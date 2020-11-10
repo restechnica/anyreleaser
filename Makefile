@@ -5,6 +5,20 @@
 build:
 	go build -o bin/bone
 
+# run quality assessment checks
+check:
+	@echo "Running gofmt ..."
+	@! gofmt -s -d -l . 2>&1 | grep -vE '^\.git/'
+	@echo "Ok!"
+
+	@echo "Running go vet ..."
+	@go vet ./...
+	@echo "Ok!"
+
+	@echo "Running goimports ..."
+	@! goimports -l . | grep -vF 'No Exceptions'
+	@echo "Ok!"
+
 # clean
 clean:
 	rm -rf bin
