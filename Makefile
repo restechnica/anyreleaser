@@ -9,6 +9,18 @@ build:
 clean:
 	rm -rf bin
 
+# format
+format:
+	go fmt ./...
+	goimports -w .
+
+# get all dependencies
+provision:
+	@echo "Getting dependencies ..."
+	@go mod download
+	@go get golang.org/x/tools/cmd/goimports
+	@echo "Done!"
+
 # run the binary
 run:
 	./bin/bone
