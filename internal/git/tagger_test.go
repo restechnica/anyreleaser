@@ -13,12 +13,16 @@ type mockCommander struct {
 	mock.Mock
 }
 
-func (m mockCommander) Output(name string, arg ...string) (string, error) {
+func NewMockCommander() *mockCommander {
+	return &mockCommander{}
+}
+
+func (m *mockCommander) Output(name string, arg ...string) (string, error) {
 	args := m.Called(name, arg)
 	return args.String(0), args.Error(1)
 }
 
-func (m mockCommander) Run(name string, arg ...string) error {
+func (m *mockCommander) Run(name string, arg ...string) error {
 	args := m.Called(name, arg)
 	return args.Error(0)
 }
@@ -30,7 +34,7 @@ func TestTagger_CreateTag(t *testing.T) {
 	t.Run("HappyPath", func(t *testing.T) {
 		var want error
 
-		var commander = new(mockCommander)
+		var commander = NewMockCommander()
 		commander.On(methodName, mock.Anything, mock.Anything).Return(want)
 
 		var tagger = NewTagger(commander)
@@ -68,7 +72,7 @@ func TestTagger_GetTag(t *testing.T) {
 		const methodName = "Output"
 
 		t.Run(test.Name, func(t *testing.T) {
-			var commander = new(mockCommander)
+			var commander = NewMockCommander()
 			commander.On(methodName, mock.Anything, mock.Anything).Return(test.Expected, test.CommanderErr)
 
 			var tagger = NewTagger(commander)

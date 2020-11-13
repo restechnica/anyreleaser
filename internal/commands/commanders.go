@@ -9,8 +9,8 @@ type Commander interface {
 
 type ExecCommander struct{}
 
-func NewExecCommander() ExecCommander {
-	return ExecCommander{}
+func NewExecCommander() *ExecCommander {
+	return &ExecCommander{}
 }
 
 func (c ExecCommander) Output(name string, arg ...string) (string, error) {
