@@ -76,21 +76,21 @@ func NewSemverReleaseCommand(app *cli.App) *cli.Command {
 	}
 
 	var action = func(c *cli.Context) (err error) {
-		//var strategy = c.String("strategy")
+		var strategyName = c.String("strategy")
 
 		var commander = commands.NewExecCommander()
 		var tagger = git.NewTagger(commander)
+		var strategy = semver.NewStrategy(strategyName)
+		var level string
 
-		var level string = semver.Patch
-
-		//if level, err = strategies.Plan(strategy); err != nil {
-		//	return
-		//}
+		if level, err = strategy.GetLevel(); err != nil {
+			return
+		}
 
 		var tag = tagger.GetTag()
 		var version string
 
-		if version, err = semver.Increment(tag, level); err != nil {
+		if version, err = semver.IncrementByLevel(tag, level); err != nil {
 			return
 		}
 

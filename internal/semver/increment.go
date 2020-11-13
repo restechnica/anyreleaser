@@ -6,10 +6,10 @@ import (
 	blangsemver "github.com/blang/semver/v4"
 )
 
-// Increment increments the specified level of a semver version.
+// IncrementByLevel increments the specified level of a semver version.
 // It supports major, minor, patch and discards any prerelease/build information.
 // It returns the incremented version or any errors if it failed.
-func Increment(currentVersion string, level string) (nextVersion string, err error) {
+func IncrementByLevel(currentVersion string, level string) (nextVersion string, err error) {
 	var version blangsemver.Version
 
 	if version, err = blangsemver.Parse(currentVersion); err != nil {
@@ -30,4 +30,17 @@ func Increment(currentVersion string, level string) (nextVersion string, err err
 	nextVersion = version.FinalizeVersion()
 
 	return
+}
+
+// IncrementByStrategy increments the specified level of a semver version.
+// It uses a strategy to determine the level to increment.
+// It returns the incremented version or any errors if it failed.
+func IncrementByStrategy(currentVersion string, strategy Strategy) (nextVersion string, err error) {
+	var level string
+
+	if level, err = strategy.GetLevel(); err != nil {
+		return
+	}
+
+	return IncrementByLevel(currentVersion, level)
 }

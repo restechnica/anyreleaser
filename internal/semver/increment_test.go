@@ -36,7 +36,7 @@ func TestSemverIncrement(t *testing.T) {
 			var version string
 			var err error
 
-			version, err = Increment(test.IncrementIn.Version, test.IncrementIn.Number)
+			version, err = IncrementByLevel(test.IncrementIn.Version, test.IncrementIn.Number)
 
 			if err != nil {
 				t.Errorf("%+v\ngot error %s", test, err)
@@ -64,7 +64,7 @@ func TestSemverIncrementErrors(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			var err error
 
-			_, err = Increment(test.IncrementIn.Version, test.IncrementIn.Number)
+			_, err = IncrementByLevel(test.IncrementIn.Version, test.IncrementIn.Number)
 
 			if err == nil {
 				t.Errorf("%+v\nthis should give an error \"%s\"", test, err)
