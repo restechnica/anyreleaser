@@ -11,9 +11,9 @@ type LevelsTest struct {
 }
 
 var LevelsTests = []LevelsTest{
-	{"patch_version_level", PATCH, "patch"},
-	{"minor_version_level", MINOR, "minor"},
-	{"major_version_level", MAJOR, "major"},
+	{"patch_version_level", Patch, "patch"},
+	{"minor_version_level", Minor, "minor"},
+	{"major_version_level", Major, "major"},
 }
 
 func TestSemverNumbers(t *testing.T) {

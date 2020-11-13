@@ -17,11 +17,11 @@ func Increment(currentVersion string, level string) (nextVersion string, err err
 	}
 
 	switch level {
-	case PATCH:
+	case Patch:
 		err = version.IncrementPatch()
-	case MINOR:
+	case Minor:
 		err = version.IncrementMinor()
-	case MAJOR:
+	case Major:
 		err = version.IncrementMajor()
 	default:
 		err = fmt.Errorf("\"%s\" is not a valid semver version level", level)

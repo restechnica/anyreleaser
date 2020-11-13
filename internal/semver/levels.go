@@ -1,10 +1,10 @@
 package semver
 
-// PATCH semver version level for patch
-const PATCH = "patch"
+// Patch semver version level for patch
+const Patch = "patch"
 
-// MINOR semver version level for minor
-const MINOR = "minor"
+// Minor semver version level for minor
+const Minor = "minor"
 
-// MAJOR semver version level for major
-const MAJOR = "major"
+// Major semver version level for major
+const Major = "major"

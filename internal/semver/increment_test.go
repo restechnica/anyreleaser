@@ -20,14 +20,14 @@ type IncrementTest struct {
 }
 
 var incrementTests = []IncrementTest{
-	{"increment_patch", IncrementIn{"0.0.1", PATCH}, IncrementOut{"0.0.2"}},
-	{"increment_minor_and_reset_patch", IncrementIn{"0.0.2", MINOR}, IncrementOut{"0.1.0"}},
-	{"increment_major_and_reset_minor_patch", IncrementIn{"0.3.0", MAJOR}, IncrementOut{"1.0.0"}},
-	{"increment_patch_discard_pre_build", IncrementIn{"0.0.1-pre+001", PATCH}, IncrementOut{"0.0.2"}},
-	{"increment_minor_discard_pre_build", IncrementIn{"0.0.2-pre+001", MINOR}, IncrementOut{"0.1.0"}},
-	{"increment_major_discard_pre_build", IncrementIn{"0.3.0-pre+001", MAJOR}, IncrementOut{"1.0.0"}},
-	{"increment_patch_no_discard_minor_major", IncrementIn{"3.2.0", PATCH}, IncrementOut{"3.2.1"}},
-	{"increment_minor_no_discard_major", IncrementIn{"3.0.0", MINOR}, IncrementOut{"3.1.0"}},
+	{"increment_patch", IncrementIn{"0.0.1", Patch}, IncrementOut{"0.0.2"}},
+	{"increment_minor_and_reset_patch", IncrementIn{"0.0.2", Minor}, IncrementOut{"0.1.0"}},
+	{"increment_major_and_reset_minor_patch", IncrementIn{"0.3.0", Major}, IncrementOut{"1.0.0"}},
+	{"increment_patch_discard_pre_build", IncrementIn{"0.0.1-pre+001", Patch}, IncrementOut{"0.0.2"}},
+	{"increment_minor_discard_pre_build", IncrementIn{"0.0.2-pre+001", Minor}, IncrementOut{"0.1.0"}},
+	{"increment_major_discard_pre_build", IncrementIn{"0.3.0-pre+001", Major}, IncrementOut{"1.0.0"}},
+	{"increment_patch_no_discard_minor_major", IncrementIn{"3.2.0", Patch}, IncrementOut{"3.2.1"}},
+	{"increment_minor_no_discard_major", IncrementIn{"3.0.0", Minor}, IncrementOut{"3.1.0"}},
 }
 
 func TestSemverIncrement(t *testing.T) {
@@ -54,7 +54,7 @@ type IncrementErrorTest struct {
 }
 
 var incrementErrorTests = []IncrementErrorTest{
-	{"non_semver_input", IncrementIn{"help", PATCH}, `No Major.Minor.Patch elements found`},
+	{"non_semver_input", IncrementIn{"help", Patch}, `No Major.Minor.Patch elements found`},
 	{"invalid_version_level", IncrementIn{"0.0.1", "invalid"}, `"invalid" is not a valid semver version level`},
 	{"invalid_version_level", IncrementIn{"v0.0.1", "patch"}, `Invalid character(s) found in major number "v0"`},
 }
