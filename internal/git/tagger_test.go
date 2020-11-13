@@ -80,7 +80,7 @@ func TestTagger_GetTag(t *testing.T) {
 			var got = tagger.GetTag()
 			var want = test.Expected
 
-			assert.Equal(t, want, got, fmt.Sprintf("We wanted %s and got %s", want, got))
+			assert.Equal(t, want, got, fmt.Sprintf("Wanted %s and got %s", want, got))
 		})
 	}
 }
