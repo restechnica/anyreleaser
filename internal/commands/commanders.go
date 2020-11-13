@@ -9,6 +9,10 @@ type Commander interface {
 
 type ExecCommander struct{}
 
+func NewExecCommander() ExecCommander {
+	return ExecCommander{}
+}
+
 func (c ExecCommander) Output(name string, arg ...string) (string, error) {
 	var output, err = exec.Command(name, arg...).Output()
 	return string(output), err

@@ -4,7 +4,7 @@ import (
 	"github.com/restechnica/backbone-cli/internal/commands"
 )
 
-const defaultTag = "0.0.0"
+const DefaultTag = "0.0.0"
 
 type Tagger struct {
 	commander commands.Commander
@@ -26,7 +26,7 @@ func (tagger Tagger) GetTag() (output string) {
 	var err error
 
 	if output, err = tagger.commander.Output("git", "describe"); err != nil {
-		return defaultTag
+		return DefaultTag
 	}
 
 	return
