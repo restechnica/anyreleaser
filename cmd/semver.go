@@ -40,9 +40,9 @@ func NewSemverGetCommand(app *cli.App) *cli.Command {
 
 	var action = func(c *cli.Context) (err error) {
 		var commander = commands.NewExecCommander()
-		var tagger = git.NewTagger(commander)
+		var gitService = git.NewService(commander)
 
-		fmt.Println(tagger.GetTag())
+		fmt.Println(gitService.GetTag())
 
 		return
 	}
@@ -76,27 +76,26 @@ func NewSemverReleaseCommand(app *cli.App) *cli.Command {
 	}
 
 	var action = func(c *cli.Context) (err error) {
+		var level string
+		var version string
+
 		var strategyName = c.String("strategy")
 
 		var commander = commands.NewExecCommander()
-		var tagger = git.NewTagger(commander)
-		var strategy = semver.NewStrategy(strategyName)
-		var level string
+		var gitService = git.NewService(commander)
+		var strategy = semver.NewStrategy(strategyName, gitService)
 
 		if level, err = strategy.GetLevel(); err != nil {
 			return
 		}
 
-		var tag = tagger.GetTag()
-		var version string
+		var tag = gitService.GetTag()
 
 		if version, err = semver.IncrementByLevel(tag, level); err != nil {
 			return
 		}
 
-		err = tagger.CreateTag(version)
-
-		return
+		return gitService.CreateTag(version)
 	}
 
 	return &cli.Command{
