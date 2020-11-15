@@ -101,10 +101,10 @@ func TestCLIService_GetTag(t *testing.T) {
 
 			var gitService = NewCLIService(commander)
 
-			var got = gitService.GetTag()
 			var want = test.Want
+			var got = gitService.GetTag()
 
-			assert.Equal(t, want, got, fmt.Sprintf("Wanted %s and got %s", want, got))
+			assert.Equal(t, want, got, fmt.Sprintf(`want: "%s", got: "%s"`, want, got))
 		})
 	}
 }

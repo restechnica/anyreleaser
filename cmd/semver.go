@@ -92,7 +92,7 @@ func NewSemverReleaseCommand(app *cli.App) *cli.Command {
 
 		var tag = gitService.GetTag()
 
-		if version, err = semver.IncrementByLevel(tag, level); err != nil {
+		if version, err = semverManager.IncrementByLevel(tag, level); err != nil {
 			return
 		}
 
