@@ -2,6 +2,7 @@ package semver
 
 import (
 	"fmt"
+	blangsemver "github.com/blang/semver/v4"
 	"regexp"
 
 	"github.com/restechnica/backbone-cli/internal/commands"
@@ -46,4 +47,20 @@ func (s GitCommitStrategy) GetLevel() (level string, err error) {
 	}
 
 	return strategy.GetLevel()
+}
+
+// Increment increments a given version using the PatchStrategy.
+// Returns the incremented version.
+func (s GitCommitStrategy) Increment(targetVersion string) (nextVersion string, err error) {
+	var version blangsemver.Version
+
+	if version, err = blangsemver.Parse(targetVersion); err != nil {
+		return
+	}
+
+	if err = version.IncrementPatch(); err != nil {
+		return
+	}
+
+	return version.FinalizeVersion(), err
 }
