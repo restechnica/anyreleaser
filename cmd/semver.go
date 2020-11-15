@@ -40,7 +40,7 @@ func NewSemverGetCommand(app *cli.App) *cli.Command {
 
 	var action = func(c *cli.Context) (err error) {
 		var commander = commands.NewExecCommander()
-		var gitService = git.NewService(commander)
+		var gitService = git.NewCLIService(commander)
 
 		fmt.Println(gitService.GetTag())
 
@@ -82,7 +82,7 @@ func NewSemverReleaseCommand(app *cli.App) *cli.Command {
 		var strategyName = c.String("strategy")
 
 		var commander = commands.NewExecCommander()
-		var gitService = git.NewService(commander)
+		var gitService = git.NewCLIService(commander)
 		var semverManager = semver.NewManager(gitService)
 		var strategy = semverManager.GetStrategy(strategyName)
 

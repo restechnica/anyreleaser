@@ -9,34 +9,34 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-type serviceCommanderMock struct {
+type cliServiceCommanderMock struct {
 	mock.Mock
 }
 
-func NewServiceCommanderMock() *serviceCommanderMock {
-	return &serviceCommanderMock{}
+func NewCLIServiceCommanderMock() *cliServiceCommanderMock {
+	return &cliServiceCommanderMock{}
 }
 
-func (m *serviceCommanderMock) Output(name string, arg ...string) (string, error) {
+func (m *cliServiceCommanderMock) Output(name string, arg ...string) (string, error) {
 	args := m.Called(name, arg)
 	return args.String(0), args.Error(1)
 }
 
-func (m *serviceCommanderMock) Run(name string, arg ...string) error {
+func (m *cliServiceCommanderMock) Run(name string, arg ...string) error {
 	args := m.Called(name, arg)
 	return args.Error(0)
 }
 
-func TestService_CreateTag(t *testing.T) {
+func TestCLIService_CreateTag(t *testing.T) {
 	const testTag = "1.2.3"
 
 	t.Run("HappyPath", func(t *testing.T) {
 		var want error
 
-		var commander = NewServiceCommanderMock()
+		var commander = NewCLIServiceCommanderMock()
 		commander.On("Run", mock.Anything, mock.Anything).Return(want)
 
-		var service = NewService(commander)
+		var service = NewCLIService(commander)
 		var got = service.CreateTag(testTag)
 
 		assert.NoError(t, got)
@@ -45,24 +45,24 @@ func TestService_CreateTag(t *testing.T) {
 	t.Run("ReturnErrorOnError", func(t *testing.T) {
 		var want = errors.New("some-error")
 
-		var commander = new(serviceCommanderMock)
+		var commander = new(cliServiceCommanderMock)
 		commander.On("Run", mock.Anything, mock.Anything).Return(want)
 
-		var gitService = NewService(commander)
+		var gitService = NewCLIService(commander)
 		var got = gitService.CreateTag(testTag)
 
 		assert.Error(t, got)
 	})
 }
 
-func TestService_GetLatestCommitMessage(t *testing.T) {
+func TestCLIService_GetLatestCommitMessage(t *testing.T) {
 	t.Run("HappyPath", func(t *testing.T) {
 		var want = "[fix] hello message"
 
-		var commander = NewServiceCommanderMock()
+		var commander = NewCLIServiceCommanderMock()
 		commander.On("Output", mock.Anything, mock.Anything).Return(want, nil)
 
-		var gitService = NewService(commander)
+		var gitService = NewCLIService(commander)
 		var got, err = gitService.GetLatestCommitMessage()
 
 		assert.NoError(t, err)
@@ -72,17 +72,17 @@ func TestService_GetLatestCommitMessage(t *testing.T) {
 	t.Run("ReturnErrorOnError", func(t *testing.T) {
 		var want = fmt.Errorf("some-error")
 
-		var commander = NewServiceCommanderMock()
+		var commander = NewCLIServiceCommanderMock()
 		commander.On("Output", mock.Anything, mock.Anything).Return("", want)
 
-		var gitService = NewService(commander)
+		var gitService = NewCLIService(commander)
 		var _, err = gitService.GetLatestCommitMessage()
 
 		assert.Error(t, err)
 	})
 }
 
-func TestService_GetTag(t *testing.T) {
+func TestCLIService_GetTag(t *testing.T) {
 	type GetTagTest struct {
 		Err  error
 		Name string
@@ -96,10 +96,10 @@ func TestService_GetTag(t *testing.T) {
 
 	for _, test := range getTagTests {
 		t.Run(test.Name, func(t *testing.T) {
-			var commander = NewServiceCommanderMock()
+			var commander = NewCLIServiceCommanderMock()
 			commander.On("Output", mock.Anything, mock.Anything).Return(test.Want, test.Err)
 
-			var gitService = NewService(commander)
+			var gitService = NewCLIService(commander)
 
 			var got = gitService.GetTag()
 			var want = test.Want

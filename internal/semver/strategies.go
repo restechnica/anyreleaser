@@ -51,7 +51,7 @@ func NewGitCommitStrategy(gitService git.Service) GitCommitStrategy {
 // Returns the level to increment.
 func (s GitCommitStrategy) GetLevel() (level string, err error) {
 	var commander = commands.NewExecCommander()
-	var gitService = git.NewService(commander)
+	var gitService = git.NewCLIService(commander)
 
 	var message string
 
