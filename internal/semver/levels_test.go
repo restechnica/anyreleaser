@@ -7,7 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestSemverLevelConstants(t *testing.T) {
+func TestLevels_Constants(t *testing.T) {
 	type LevelTest struct {
 		Name string
 		Got  string
