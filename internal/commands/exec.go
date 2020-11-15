@@ -2,12 +2,6 @@ package commands
 
 import "os/exec"
 
-// Commander interface to run commands.
-type Commander interface {
-	Output(name string, arg ...string) (output string, err error)
-	Run(name string, arg ...string) (err error)
-}
-
 // ExecCommander implementation of the Commander interface.
 // It makes use of exec.Command to run commands.
 type ExecCommander struct{}
