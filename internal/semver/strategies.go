@@ -8,9 +8,9 @@ import (
 	"github.com/restechnica/backbone-cli/internal/git"
 )
 
-var DefaultFeatureRegex = regexp.MustCompile(`(\[feature\]|feature\/)`)
-var DefaultFixRegex = regexp.MustCompile(`(\[fix\]|fix\/)`)
-var DefaultReleaseRegex = regexp.MustCompile(`(\[release\]|release\/)`)
+var DefaultFeatureRegex = regexp.MustCompile(`(\[feature]|feature/)`)
+var DefaultFixRegex = regexp.MustCompile(`(\[fix]|fix/)`)
+var DefaultReleaseRegex = regexp.MustCompile(`(\[release]|release/)`)
 
 type Strategy interface {
 	GetLevel() (level string, err error)
