@@ -2,8 +2,9 @@ package semver
 
 import (
 	"fmt"
-	blangsemver "github.com/blang/semver/v4"
 	"regexp"
+
+	blangsemver "github.com/blang/semver/v4"
 
 	"github.com/restechnica/backbone-cli/internal/commands"
 	"github.com/restechnica/backbone-cli/internal/git"
