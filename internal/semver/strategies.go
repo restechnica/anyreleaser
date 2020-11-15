@@ -16,24 +16,6 @@ type Strategy interface {
 	GetLevel() (level string, err error)
 }
 
-func NewStrategy(strategy string, gitService git.Service) Strategy {
-	switch strategy {
-	case Patch:
-		return PatchStrategy{}
-	case Minor:
-		return MinorStrategy{}
-	case Major:
-		return MajorStrategy{}
-	case "auto":
-		var gitCommitStrategy = NewGitCommitStrategy(gitService)
-		return NewAutoStrategy(gitCommitStrategy)
-	case "commit":
-		return NewGitCommitStrategy(gitService)
-	default:
-		return PatchStrategy{}
-	}
-}
-
 type AutoStrategy struct {
 	GitCommitStrategy
 	PatchStrategy
@@ -57,11 +39,11 @@ func (s AutoStrategy) GetLevel() (level string, err error) {
 }
 
 type GitCommitStrategy struct {
-	Committer git.Service
+	gitService git.Service
 }
 
-func NewGitCommitStrategy(committer git.Service) GitCommitStrategy {
-	return GitCommitStrategy{Committer: committer}
+func NewGitCommitStrategy(gitService git.Service) GitCommitStrategy {
+	return GitCommitStrategy{gitService: gitService}
 }
 
 // GetLevel gets the level to increment using the GitCommitStrategy.
@@ -69,11 +51,11 @@ func NewGitCommitStrategy(committer git.Service) GitCommitStrategy {
 // Returns the level to increment.
 func (s GitCommitStrategy) GetLevel() (level string, err error) {
 	var commander = commands.NewExecCommander()
-	var committer = git.NewService(commander)
+	var gitService = git.NewService(commander)
 
 	var message string
 
-	if message, err = committer.GetLatestCommitMessage(); err != nil {
+	if message, err = gitService.GetLatestCommitMessage(); err != nil {
 		return
 	}
 

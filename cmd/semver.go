@@ -83,7 +83,8 @@ func NewSemverReleaseCommand(app *cli.App) *cli.Command {
 
 		var commander = commands.NewExecCommander()
 		var gitService = git.NewService(commander)
-		var strategy = semver.NewStrategy(strategyName, gitService)
+		var semverManager = semver.NewManager(gitService)
+		var strategy = semverManager.GetStrategy(strategyName)
 
 		if level, err = strategy.GetLevel(); err != nil {
 			return

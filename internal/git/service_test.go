@@ -48,8 +48,8 @@ func TestService_CreateTag(t *testing.T) {
 		var commander = new(serviceCommanderMock)
 		commander.On("Run", mock.Anything, mock.Anything).Return(want)
 
-		var tagger = NewService(commander)
-		var got = tagger.CreateTag(testTag)
+		var gitService = NewService(commander)
+		var got = gitService.CreateTag(testTag)
 
 		assert.Error(t, got)
 	})
@@ -62,8 +62,8 @@ func TestService_GetLatestCommitMessage(t *testing.T) {
 		var commander = NewServiceCommanderMock()
 		commander.On("Output", mock.Anything, mock.Anything).Return(want, nil)
 
-		var committer = NewService(commander)
-		var got, err = committer.GetLatestCommitMessage()
+		var gitService = NewService(commander)
+		var got, err = gitService.GetLatestCommitMessage()
 
 		assert.NoError(t, err)
 		assert.Equal(t, want, got, fmt.Sprintf("want: %s, got: %s", want, got))
@@ -75,8 +75,8 @@ func TestService_GetLatestCommitMessage(t *testing.T) {
 		var commander = NewServiceCommanderMock()
 		commander.On("Output", mock.Anything, mock.Anything).Return("", want)
 
-		var committer = NewService(commander)
-		var _, err = committer.GetLatestCommitMessage()
+		var gitService = NewService(commander)
+		var _, err = gitService.GetLatestCommitMessage()
 
 		assert.Error(t, err)
 	})
@@ -84,25 +84,25 @@ func TestService_GetLatestCommitMessage(t *testing.T) {
 
 func TestService_GetTag(t *testing.T) {
 	type GetTagTest struct {
-		CommanderErr error
-		Name         string
-		Expected     string
+		Err  error
+		Name string
+		Want string
 	}
 
 	var getTagTests = []GetTagTest{
-		{Name: "HappyPath", CommanderErr: nil, Expected: "1.0.0"},
-		{Name: "ReturnDefaultTagOnError", CommanderErr: errors.New("some-error"), Expected: DefaultTag},
+		{Name: "HappyPath", Err: nil, Want: "1.0.0"},
+		{Name: "ReturnDefaultTagOnError", Err: errors.New("some-error"), Want: DefaultTag},
 	}
 
 	for _, test := range getTagTests {
 		t.Run(test.Name, func(t *testing.T) {
 			var commander = NewServiceCommanderMock()
-			commander.On("Output", mock.Anything, mock.Anything).Return(test.Expected, test.CommanderErr)
+			commander.On("Output", mock.Anything, mock.Anything).Return(test.Want, test.Err)
 
-			var tagger = NewService(commander)
+			var gitService = NewService(commander)
 
-			var got = tagger.GetTag()
-			var want = test.Expected
+			var got = gitService.GetTag()
+			var want = test.Want
 
 			assert.Equal(t, want, got, fmt.Sprintf("Wanted %s and got %s", want, got))
 		})
