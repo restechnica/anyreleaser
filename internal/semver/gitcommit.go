@@ -57,5 +57,5 @@ func (strategy GitCommitStrategy) GetMatchedStrategy(message string) (matched St
 		return
 	}
 
-	return matched, fmt.Errorf("could not match a strategy to the commit message %s", message)
+	return matched, fmt.Errorf(`could not match a strategy to the commit message "%s"`, message)
 }
