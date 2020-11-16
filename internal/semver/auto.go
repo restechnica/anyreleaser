@@ -4,11 +4,11 @@ package semver
 const Auto = "auto"
 
 type AutoStrategy struct {
-	GitCommitStrategy
-	PatchStrategy
+	GitCommitStrategy Strategy
+	PatchStrategy     Strategy
 }
 
-func NewAutoStrategy(gitCommitStrategy GitCommitStrategy) AutoStrategy {
+func NewAutoStrategy(gitCommitStrategy Strategy) AutoStrategy {
 	return AutoStrategy{GitCommitStrategy: gitCommitStrategy, PatchStrategy: PatchStrategy{}}
 }
 

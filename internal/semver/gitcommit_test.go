@@ -126,7 +126,6 @@ func TestGitCommitStrategy_Increment(t *testing.T) {
 	}
 
 	type ErrorTest struct {
-		Error   string
 		Message string
 		Name    string
 		Version string
