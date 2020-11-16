@@ -1,7 +1,6 @@
 package semver
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -12,7 +11,7 @@ func TestMajorStrategy_MajorConstant(t *testing.T) {
 		var want = "major"
 		var got = Major
 
-		assert.Equal(t, want, got, fmt.Sprintf(`want: "%s", got: "%s"`, want, got))
+		assert.Equal(t, want, got, `want: "%s", got: "%s"`, want, got)
 	})
 }
 
@@ -37,7 +36,7 @@ func TestMajorStrategy_Increment(t *testing.T) {
 			var got, err = strategy.Increment(test.TargetVersion)
 
 			assert.NoError(t, err)
-			assert.Equal(t, want, got, fmt.Sprintf(`want: %s, got: %s`, want, got))
+			assert.Equal(t, want, got, `want: %s, got: %s`, want, got)
 		})
 	}
 

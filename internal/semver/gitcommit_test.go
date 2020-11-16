@@ -36,22 +36,27 @@ func TestGitCommitStrategy_GitCommitConstant(t *testing.T) {
 		var want = "git-commit"
 		var got = GitCommit
 
-		assert.Equal(t, want, got, fmt.Sprintf(`want: "%s", got: "%s"`, want, got))
+		assert.Equal(t, want, got, `want: "%s", got: "%s"`, want, got)
 	})
 }
 
 func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
-	type GetMatchedStrategyTest struct {
+	type Test struct {
 		Message string
 		Name    string
 		Want    Strategy
 	}
 
-	var getMatchedStrategyTests = []GetMatchedStrategyTest{
-		{Name: "GetPatchStrategyWithBrackets", Message: "[fix some message", Want: NewPatchStrategy()},
+	var tests = []Test{
+		{Name: "GetPatchStrategyWithBrackets", Message: "[fix] some message", Want: NewPatchStrategy()},
+		{Name: "GetPatchStrategyWithTrailingSlash", Message: "Merged: repo/fix/some-error", Want: NewPatchStrategy()},
+		{Name: "GetMinorStrategyWithBrackets", Message: "some [feature] message", Want: NewMinorStrategy()},
+		{Name: "GetMinorStrategyWithTrailingSlash", Message: "Merged: repo/feature/some-error", Want: NewMinorStrategy()},
+		{Name: "GetMajorStrategyWithBrackets", Message: "some message [release]", Want: NewMajorStrategy()},
+		{Name: "GetMajorStrategyWithTrailingSlash", Message: "Merged: repo/release/some-error", Want: NewMajorStrategy()},
 	}
 
-	for _, test := range getMatchedStrategyTests {
+	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			var want = test.Want
 
@@ -61,6 +66,28 @@ func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
 
 			assert.NoError(t, err)
 			assert.IsType(t, want, got, `want: %s, got: %s`, want, got)
+		})
+	}
+
+	type ErrorTest struct {
+		Message string
+		Name    string
+	}
+
+	var errorTests = []ErrorTest{
+		{Name: "ReturnErrorOnUnmatchedStrategy", Message: "[fix some message"},
+	}
+
+	for _, test := range errorTests {
+		t.Run(test.Name, func(t *testing.T) {
+			var want = fmt.Sprintf("could not match a strategy to the commit message %s", test.Message)
+
+			var service = NewGitCommitStrategyGitServiceMock()
+			var gitCommitStrategy = NewGitCommitStrategy(service)
+			var _, got = gitCommitStrategy.GetMatchedStrategy(test.Message)
+
+			assert.Error(t, got)
+			assert.Equal(t, got.Error(), want, `want: "%s", got: "%s"`, want, got)
 		})
 	}
 }

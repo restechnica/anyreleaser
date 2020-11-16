@@ -66,7 +66,7 @@ func TestCLIService_GetLatestCommitMessage(t *testing.T) {
 		var got, err = gitService.GetLatestCommitMessage()
 
 		assert.NoError(t, err)
-		assert.Equal(t, want, got, fmt.Sprintf("want: %s, got: %s", want, got))
+		assert.Equal(t, want, got, "want: %s, got: %s", want, got)
 	})
 
 	t.Run("ReturnErrorOnError", func(t *testing.T) {
@@ -104,7 +104,7 @@ func TestCLIService_GetTag(t *testing.T) {
 			var want = test.Want
 			var got = gitService.GetTag()
 
-			assert.Equal(t, want, got, fmt.Sprintf(`want: "%s", got: "%s"`, want, got))
+			assert.Equal(t, want, got, `want: "%s", got: "%s"`, want, got)
 		})
 	}
 }

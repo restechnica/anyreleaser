@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +14,7 @@ func TestExecCommander_Output(t *testing.T) {
 		var got, err = commander.Output("echo", "-n", want)
 
 		assert.NoError(t, err)
-		assert.Equal(t, want, got, fmt.Sprintf("want: %s, got: %s", want, got))
+		assert.Equal(t, want, got, "want: %s, got: %s", want, got)
 	})
 
 	t.Run("ReturnErrorOnError", func(t *testing.T) {
