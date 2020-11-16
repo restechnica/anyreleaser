@@ -22,9 +22,8 @@ func (patchStrategy PatchStrategy) Increment(targetVersion string) (nextVersion 
 		return
 	}
 
-	if err = version.IncrementPatch(); err != nil {
-		return
-	}
+	// at point of writing IncrementPatch always returns a nil value error
+	_ = version.IncrementPatch()
 
 	return version.FinalizeVersion(), err
 }

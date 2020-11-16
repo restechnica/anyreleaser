@@ -21,7 +21,7 @@ check:
 
 # clean
 clean:
-	rm -rf bin
+	rm -rf bin out
 
 # format
 format:
@@ -41,4 +41,6 @@ run:
 
 # run tests
 test:
-	go test ./... -cover -v
+	mkdir -p ./out
+	go test ./... -cover -v -coverprofile ./out/coverage.txt
+	uncover ./out/coverage.txt

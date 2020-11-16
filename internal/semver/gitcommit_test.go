@@ -126,21 +126,24 @@ func TestGitCommitStrategy_Increment(t *testing.T) {
 	}
 
 	type ErrorTest struct {
-		Message string
-		Name    string
-		Version string
+		GitError error
+		Message  string
+		Name     string
+		Version  string
 	}
 
 	var errorTests = []ErrorTest{
-		{Name: "ReturnErrorOnUnmatchedStrategy", Message: "[fix some message", Version: "0.0.0"},
-		{Name: "ReturnErrorOnInvalidVersion", Message: "[fix] some message", Version: "invalid"},
-		{Name: "ReturnErrorOnInvalidCharacter", Message: "[fix] some message", Version: "v1.0.0"},
+		{Name: "ReturnErrorOnUnmatchedStrategy", Message: "[fix some message", Version: "0.0.0", GitError: nil},
+		{Name: "ReturnErrorOnInvalidVersion", Message: "[fix] some message", Version: "invalid", GitError: nil},
+		{Name: "ReturnErrorOnInvalidCharacter", Message: "[fix] some message", Version: "v1.0.0", GitError: nil},
+		{Name: "ReturnErrorOnGitError", Message: "[fix] some message", Version: "1.0.0",
+			GitError: fmt.Errorf("some-error")},
 	}
 
 	for _, test := range errorTests {
 		t.Run(test.Name, func(t *testing.T) {
 			var service = NewGitCommitStrategyGitServiceMock()
-			service.On("GetLatestCommitMessage").Return(test.Message, nil)
+			service.On("GetLatestCommitMessage").Return(test.Message, test.GitError)
 
 			var gitCommitStrategy = NewGitCommitStrategy(service)
 			var _, err = gitCommitStrategy.Increment(test.Version)

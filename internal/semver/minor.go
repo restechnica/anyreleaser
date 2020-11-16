@@ -20,9 +20,8 @@ func (minorStrategy MinorStrategy) Increment(targetVersion string) (nextVersion 
 		return
 	}
 
-	if err = version.IncrementMinor(); err != nil {
-		return
-	}
+	// at point of writing IncrementMinor always returns a nil value error
+	_ = version.IncrementMinor()
 
 	return version.FinalizeVersion(), err
 }
