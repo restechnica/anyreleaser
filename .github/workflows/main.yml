@@ -1,0 +1,16 @@
+name: main
+
+on:
+  push:
+    branches: [ feature/* ]
+
+jobs:
+  main:
+    name: Main
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Provision
+        run: make provision
