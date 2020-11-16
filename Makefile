@@ -4,6 +4,9 @@
 # build the project
 build:
 	go build -o bin/bone
+	GOOS=windows GOARCH=amd64 go build -o bin/bone-windows-amd64
+	GOOS=linux GOARCH=amd64 go build -o bin/bone-linux-amd64
+	GOOS=darwin GOARCH=amd64 go build -o bin/bone-darwin-amd64
 
 # run quality assessment checks
 check:
@@ -31,8 +34,9 @@ format:
 # get all dependencies
 provision:
 	@echo "Getting dependencies ..."
-	@go mod download
 	@go get golang.org/x/tools/cmd/goimports
+	@go get github.com/gregoryv/uncover/...
+	@go mod download
 	@echo "Done!"
 
 # run the binary
