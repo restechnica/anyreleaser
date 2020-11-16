@@ -39,7 +39,7 @@ jobs:
 
       - name: release
         run: |
-          echo current version: $(./bin/bone semver get)
+          CURRENT_VERSION=$(./bin/bone semver get)
           ./bin/bone semver release
-          echo next version: $(./bin/bone semver get)
-          git push origin $(./bin/bone semver release)
+          NEXT_VERSION=$(./bin/bone semver get)
+          git push origin $NEXT_VERSION
