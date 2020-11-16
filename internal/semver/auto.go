@@ -1,6 +1,7 @@
 package semver
 
-import blangsemver "github.com/blang/semver/v4"
+// Auto strategy name for AutoStrategy.
+const Auto = "auto"
 
 type AutoStrategy struct {
 	GitCommitStrategy
@@ -17,24 +18,20 @@ func NewAutoStrategy(gitCommitStrategy GitCommitStrategy) AutoStrategy {
 // 		2. the PatchStrategy
 // Returns the determined level or an error if anything went wrong.
 func (autoStrategy AutoStrategy) GetLevel() (level string, err error) {
-	if level, err = autoStrategy.GitCommitStrategy.GetLevel(); err != nil {
-		return autoStrategy.PatchStrategy.GetLevel()
+	if level, err = autoStrategy.GitCommitStrategy.GetLevel(); err == nil {
+		return
 	}
-	return
+	return autoStrategy.PatchStrategy.GetLevel()
 }
 
-// Increment increments a given version using the PatchStrategy.
-// Returns the incremented version.
+// Increment increments a given version using the AutoStrategy.
+// It will attempt to increment the target version with several strategies:
+//		1. the GitCommitStrategy
+// 		2. the PatchStrategy
+// Returns the incremented version or an error if anything went wrong.
 func (autoStrategy AutoStrategy) Increment(targetVersion string) (nextVersion string, err error) {
-	var version blangsemver.Version
-
-	if version, err = blangsemver.Parse(targetVersion); err != nil {
+	if nextVersion, err = autoStrategy.GitCommitStrategy.Increment(targetVersion); err == nil {
 		return
 	}
-
-	if err = version.IncrementPatch(); err != nil {
-		return
-	}
-
-	return version.FinalizeVersion(), err
+	return autoStrategy.PatchStrategy.Increment(targetVersion)
 }
