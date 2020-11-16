@@ -3,11 +3,15 @@ package semver
 // Auto strategy name for AutoStrategy.
 const Auto = "auto"
 
+// AutoStrategy implementation of the Strategy interface.
+// It makes use of several strategies and defaults to PatchStrategy as a last resort.
 type AutoStrategy struct {
 	GitCommitStrategy Strategy
 	PatchStrategy     Strategy
 }
 
+// NewAutoStrategy creates a new AutoStrategy.
+// Returns the new AutoStrategy.
 func NewAutoStrategy(gitCommitStrategy Strategy) AutoStrategy {
 	return AutoStrategy{GitCommitStrategy: gitCommitStrategy, PatchStrategy: PatchStrategy{}}
 }

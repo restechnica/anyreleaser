@@ -14,10 +14,14 @@ var DefaultReleaseRegex = regexp.MustCompile(`(\[release]|release/)`)
 // GitCommit strategy name for GitCommitStrategy.
 const GitCommit = "git-commit"
 
+// GitCommitStrategy implementation of the Strategy interface.
+// It makes use of several matching strategies based on git commit messages.
 type GitCommitStrategy struct {
 	gitService git.Service
 }
 
+// NewGitCommitStrategy creates a new GitCommitStrategy.
+// Returns the new GitCommitStrategy.
 func NewGitCommitStrategy(gitService git.Service) GitCommitStrategy {
 	return GitCommitStrategy{gitService: gitService}
 }

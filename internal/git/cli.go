@@ -4,10 +4,14 @@ import "github.com/restechnica/backbone-cli/internal/commands"
 
 const DefaultTag = "0.0.0"
 
+// CLIService implementation of the Service interface.
+// It makes use of git commands.
 type CLIService struct {
 	commander commands.Commander
 }
 
+// NewCLIService creates a new CLIService.
+// Returns the new NewCLIService.
 func NewCLIService(commander commands.Commander) CLIService {
 	return CLIService{commander: commander}
 }

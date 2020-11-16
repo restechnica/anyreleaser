@@ -5,8 +5,12 @@ import blangsemver "github.com/blang/semver/v4"
 // Major semver version level for major
 const Major = "major"
 
+// MajorStrategy implementation of the Strategy interface.
+// It makes use of the major level of semver versions.
 type MajorStrategy struct{}
 
+// NewMajorStrategy creates a new MajorStrategy.
+// Returns the new MajorStrategy.
 func NewMajorStrategy() MajorStrategy {
 	return MajorStrategy{}
 }

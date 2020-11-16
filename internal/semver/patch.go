@@ -7,8 +7,12 @@ import (
 // Patch semver version level for patch
 const Patch = "patch"
 
+// PatchStrategy implementation of the Strategy interface.
+// It makes use of the patch level of semver versions.
 type PatchStrategy struct{}
 
+// NewPatchStrategy creates a new PatchStrategy.
+// Returns the new PatchStrategy.
 func NewPatchStrategy() PatchStrategy {
 	return PatchStrategy{}
 }

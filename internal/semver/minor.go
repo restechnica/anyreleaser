@@ -5,8 +5,12 @@ import blangsemver "github.com/blang/semver/v4"
 // Minor semver version level for minor
 const Minor = "minor"
 
+// MinorStrategy implementation of the Strategy interface.
+// It makes use of the minor level of semver versions.
 type MinorStrategy struct{}
 
+// NewMinorStrategy creates a new MinorStrategy.
+// Returns the new MinorStrategy.
 func NewMinorStrategy() MinorStrategy {
 	return MinorStrategy{}
 }
