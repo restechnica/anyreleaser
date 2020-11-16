@@ -83,18 +83,18 @@ func TestCLIService_GetLatestCommitMessage(t *testing.T) {
 }
 
 func TestCLIService_GetTag(t *testing.T) {
-	type GetTagTest struct {
+	type Test struct {
 		Err  error
 		Name string
 		Want string
 	}
 
-	var getTagTests = []GetTagTest{
+	var tests = []Test{
 		{Name: "HappyPath", Err: nil, Want: "1.0.0"},
 		{Name: "ReturnDefaultTagOnError", Err: errors.New("some-error"), Want: DefaultTag},
 	}
 
-	for _, test := range getTagTests {
+	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			var commander = NewCLIServiceCommanderMock()
 			commander.On("Output", mock.Anything, mock.Anything).Return(test.Want, test.Err)

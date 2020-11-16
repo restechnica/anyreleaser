@@ -2,8 +2,9 @@ package semver
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/mock"
 	"testing"
+
+	"github.com/stretchr/testify/mock"
 
 	"github.com/stretchr/testify/assert"
 )
@@ -84,10 +85,10 @@ func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
 
 			var service = NewGitCommitStrategyGitServiceMock()
 			var gitCommitStrategy = NewGitCommitStrategy(service)
-			var _, got = gitCommitStrategy.GetMatchedStrategy(test.Message)
+			var _, err = gitCommitStrategy.GetMatchedStrategy(test.Message)
 
-			assert.Error(t, got)
-			assert.Equal(t, got.Error(), want, `want: "%s", got: "%s"`, want, got)
+			assert.Error(t, err)
+			assert.Equal(t, err.Error(), want, `want: "%s", got: "%s"`, want, err.Error())
 		})
 	}
 }

@@ -16,19 +16,19 @@ func TestPatchStrategy_PatchConstant(t *testing.T) {
 }
 
 func TestPatchStrategy_Increment(t *testing.T) {
-	type IncrementTest struct {
+	type Test struct {
 		Name          string
 		TargetVersion string
 		Want          string
 	}
 
-	var incrementTests = []IncrementTest{
+	var tests = []Test{
 		{Name: "HappyPath", TargetVersion: "0.0.1", Want: "0.0.2"},
 		{Name: "DiscardPreBuild", TargetVersion: "0.0.8-pre+001", Want: "0.0.9"},
 		{Name: "NoResetMajorMinor", TargetVersion: "5.4.3", Want: "5.4.4"},
 	}
 
-	for _, test := range incrementTests {
+	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			var want = test.Want
 			var strategy = NewPatchStrategy()
@@ -39,17 +39,17 @@ func TestPatchStrategy_Increment(t *testing.T) {
 		})
 	}
 
-	type IncrementErrorTest struct {
+	type ErrorTest struct {
 		Name          string
 		TargetVersion string
 	}
 
-	var incrementErrorTests = []IncrementErrorTest{
+	var errorTests = []ErrorTest{
 		{Name: "ReturnErrorOnInvalidTargetVersion", TargetVersion: "invalid"},
 		{Name: "ReturnErrorOnInvalidCharacter", TargetVersion: "v1.2.3"},
 	}
 
-	for _, test := range incrementErrorTests {
+	for _, test := range errorTests {
 		t.Run(test.Name, func(t *testing.T) {
 			var strategy = NewPatchStrategy()
 			var _, got = strategy.Increment(test.TargetVersion)
