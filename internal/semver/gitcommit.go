@@ -22,24 +22,6 @@ func NewGitCommitStrategy(gitService git.Service) GitCommitStrategy {
 	return GitCommitStrategy{gitService: gitService}
 }
 
-// GetLevel gets the level to increment using the GitCommitStrategy.
-// It tries to determine which level to increment based on the latest git commit message.
-// Returns the level to increment.
-func (strategy GitCommitStrategy) GetLevel() (level string, err error) {
-	var message string
-	var matchedStrategy Strategy
-
-	if message, err = strategy.gitService.GetLatestCommitMessage(); err != nil {
-		return
-	}
-
-	if matchedStrategy, err = strategy.GetMatchedStrategy(message); err != nil {
-		return
-	}
-
-	return matchedStrategy.GetLevel()
-}
-
 // Increment increments a given version using the GitCommitStrategy.
 // Returns the incremented version.
 func (strategy GitCommitStrategy) Increment(targetVersion string) (nextVersion string, err error) {
@@ -57,6 +39,8 @@ func (strategy GitCommitStrategy) Increment(targetVersion string) (nextVersion s
 	return matchedStrategy.Increment(targetVersion)
 }
 
+// GetMatchedStrategy gets the strategy that matches specific tokens within the git commit message.
+// It returns the matched strategy.
 func (strategy GitCommitStrategy) GetMatchedStrategy(message string) (matched Strategy, err error) {
 	if DefaultFixRegex.MatchString(message) {
 		matched = NewPatchStrategy()

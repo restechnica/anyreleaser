@@ -13,12 +13,6 @@ func NewPatchStrategy() PatchStrategy {
 	return PatchStrategy{}
 }
 
-// GetLevel gets the level to increment using the PatchStrategy.
-// Returns the Patch level to increment.
-func (PatchStrategy) GetLevel() (level string, err error) {
-	return Patch, err
-}
-
 // Increment increments a given version using the PatchStrategy.
 // Returns the incremented version.
 func (patchStrategy PatchStrategy) Increment(targetVersion string) (nextVersion string, err error) {

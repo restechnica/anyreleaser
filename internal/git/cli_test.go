@@ -45,7 +45,7 @@ func TestCLIService_CreateTag(t *testing.T) {
 	t.Run("ReturnErrorOnError", func(t *testing.T) {
 		var want = errors.New("some-error")
 
-		var commander = new(cliServiceCommanderMock)
+		var commander = NewCLIServiceCommanderMock()
 		commander.On("Run", mock.Anything, mock.Anything).Return(want)
 
 		var gitService = NewCLIService(commander)
