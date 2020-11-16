@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
       - name: setup-git
         run: |
@@ -38,5 +40,6 @@ jobs:
       - name: release
         run: |
           echo current version: $(./bin/bone semver get)
-#          ./bin/bone semver release
-#          git push origin $(./bin/bone semver release)
+          ./bin/bone semver release
+          echo next version: $(./bin/bone semver get)
+          git push origin $(./bin/bone semver release)
