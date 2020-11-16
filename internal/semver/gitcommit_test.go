@@ -66,7 +66,7 @@ func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
 			var got, err = gitCommitStrategy.GetMatchedStrategy(test.Message)
 
 			assert.NoError(t, err)
-			assert.IsType(t, want, got, `want: %s, got: %s`, want, got)
+			assert.IsType(t, want, got, `want: "%s", got: "%s"`, want, got)
 		})
 	}
 
@@ -121,7 +121,7 @@ func TestGitCommitStrategy_Increment(t *testing.T) {
 			var got, err = gitCommitStrategy.Increment(test.Version)
 
 			assert.NoError(t, err)
-			assert.Equal(t, want, got, `want: %s, got: %s`, want, got)
+			assert.Equal(t, want, got, `want: "%s, got: "%s"`, want, got)
 		})
 	}
 
