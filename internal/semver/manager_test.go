@@ -1,9 +1,10 @@
 package semver
 
 import (
+	"testing"
+
 	"github.com/restechnica/backbone-cli/internal/git"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestManager_GetStrategy(t *testing.T) {
