@@ -1,6 +1,10 @@
 package git
 
-import "github.com/restechnica/backbone-cli/internal/commands"
+import (
+	"strings"
+
+	"github.com/restechnica/backbone-cli/internal/commands"
+)
 
 const DefaultTag = "0.0.0"
 
@@ -30,6 +34,7 @@ func (service CLIService) GetLatestCommitMessage() (message string, err error) {
 
 // GetTag gets the latest annotated git tag.
 // It returns the latest annotated git tag or the default "0.0.0" tag if the git command fails.
+// It also trims whitespace from the git command output.
 func (service CLIService) GetTag() (output string) {
 	var err error
 
@@ -37,5 +42,5 @@ func (service CLIService) GetTag() (output string) {
 		return DefaultTag
 	}
 
-	return
+	return strings.TrimSpace(output)
 }
