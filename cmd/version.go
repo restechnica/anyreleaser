@@ -17,7 +17,8 @@ func NewVersionCommand(app *cli.App) *cli.Command {
 	var aliases = []string{"s"}
 
 	var subcommands = []*cli.Command{
-		NewSemverGetCommand(app),
+		NewVersionGetCommand(app),
+		NewVersionGetNextCommand(app),
 		NewVersionUpCommand(app),
 	}
 
@@ -31,11 +32,11 @@ func NewVersionCommand(app *cli.App) *cli.Command {
 	}
 }
 
-// NewSemverGetCommand a command to get the current semver version.
+// NewVersionGetCommand a command to get the current semver version.
 // Returns the CLI command.
-func NewSemverGetCommand(app *cli.App) *cli.Command {
+func NewVersionGetCommand(app *cli.App) *cli.Command {
 	var command = "get"
-	var description = "gets the latest semver version"
+	var description = "gets the current semver version based on a strategy"
 	var aliases = []string{"g"}
 
 	var action = func(c *cli.Context) (err error) {
@@ -57,19 +58,67 @@ func NewSemverGetCommand(app *cli.App) *cli.Command {
 	}
 }
 
+// NewVersionGetNextCommand a command to get the next semver version.
+// Returns the CLI command.
+func NewVersionGetNextCommand(app *cli.App) *cli.Command {
+	var command = "get-next"
+	var description = "gets the next semver version"
+	var aliases = []string{"gn"}
+
+	var flags = []cli.Flag{
+		&cli.StringFlag{
+			Name:    "strategy",
+			Aliases: []string{"s"},
+			Usage:   "determines the semver level to increment",
+			Value:   "auto",
+		},
+	}
+
+	var action = func(c *cli.Context) (err error) {
+		var version string
+
+		var strategyName = c.String("strategy")
+
+		var commander = commands.NewExecCommander()
+		var gitService = git.NewCLIService(commander)
+		var semverManager = semver.NewManager(gitService)
+
+		var strategy = semverManager.GetStrategy(strategyName)
+		var tag = gitService.GetTag()
+
+		if version, err = strategy.Increment(tag); err != nil {
+			return
+		}
+
+		fmt.Println(version)
+
+		return
+	}
+
+	return &cli.Command{
+		Action:          action,
+		Aliases:         aliases,
+		Flags:           flags,
+		HideHelp:        app.HideHelp,
+		HideHelpCommand: app.HideHelpCommand,
+		Name:            command,
+		Usage:           description,
+	}
+}
+
 // NewVersionUpCommand a command to increment the current semver version.
 // The [strategy|s] flag allows you to choose which semver level to increment.
 // Returns the CLI command.
 func NewVersionUpCommand(app *cli.App) *cli.Command {
 	var command = "up"
 	var description = "increments the semver version based on a strategy"
-	var aliases = []string{"r"}
+	var aliases = []string{"u"}
 
 	var flags = []cli.Flag{
 		&cli.StringFlag{
 			Name:    "strategy",
 			Aliases: []string{"s"},
-			Usage:   "determines the semver level increase",
+			Usage:   "determines the semver level to increment",
 			Value:   "auto",
 		},
 	}
