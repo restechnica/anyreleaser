@@ -29,7 +29,8 @@ func (service CLIService) CreateTag(tag string) (err error) {
 // GetLatestCommitMessage gets the latest commit message from git.
 // Returns the commit message.
 func (service CLIService) GetLatestCommitMessage() (message string, err error) {
-	return service.commander.Output("git", "show", "-s", "--format='%s'")
+	message, err = service.commander.Output("git", "show", "-s", "--format=%s")
+	return strings.TrimSpace(message), err
 }
 
 // GetTag gets the latest annotated git tag.
