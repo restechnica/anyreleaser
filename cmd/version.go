@@ -9,16 +9,16 @@ import (
 	"github.com/urfave/cli/v2"
 )
 
-// NewSemverCommand a command for semver version management based on git tags.
+// NewVersionCommand a command for semver version management based on git tags.
 // Returns the CLI command.
-func NewSemverCommand(app *cli.App) *cli.Command {
-	var command = "semver"
-	var description = "semver version operations based on git tags"
+func NewVersionCommand(app *cli.App) *cli.Command {
+	var command = "version"
+	var description = "semver version operations based on config and/or git tags"
 	var aliases = []string{"s"}
 
 	var subcommands = []*cli.Command{
 		NewSemverGetCommand(app),
-		NewSemverReleaseCommand(app),
+		NewVersionUpCommand(app),
 	}
 
 	return &cli.Command{
@@ -31,11 +31,11 @@ func NewSemverCommand(app *cli.App) *cli.Command {
 	}
 }
 
-// NewSemverGetCommand a command to get the latest semver version based on git tags.
+// NewSemverGetCommand a command to get the current semver version.
 // Returns the CLI command.
 func NewSemverGetCommand(app *cli.App) *cli.Command {
 	var command = "get"
-	var description = "gets the semver version based on the latest git tag"
+	var description = "gets the latest semver version"
 	var aliases = []string{"g"}
 
 	var action = func(c *cli.Context) (err error) {
@@ -57,13 +57,12 @@ func NewSemverGetCommand(app *cli.App) *cli.Command {
 	}
 }
 
-// NewSemverReleaseCommand a command to increment the semver version based on git tags and strategies.
-// It creates a git tag for the new version.
+// NewVersionUpCommand a command to increment the current semver version.
 // The [strategy|s] flag allows you to choose which semver level to increment.
 // Returns the CLI command.
-func NewSemverReleaseCommand(app *cli.App) *cli.Command {
-	var command = "release"
-	var description = "increments the semver version based on the latest git tag and a strategy"
+func NewVersionUpCommand(app *cli.App) *cli.Command {
+	var command = "up"
+	var description = "increments the semver version based on a strategy"
 	var aliases = []string{"r"}
 
 	var flags = []cli.Flag{
