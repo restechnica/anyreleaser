@@ -112,7 +112,7 @@ func NewVersionGetNextCommand(app *cli.App) *cli.Command {
 func NewVersionUpCommand(app *cli.App) *cli.Command {
 	var command = "up"
 	var description = "increments the semver version based on a strategy"
-	var aliases = []string{"r"}
+	var aliases = []string{"u"}
 
 	var flags = []cli.Flag{
 		&cli.StringFlag{

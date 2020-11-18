@@ -41,5 +41,7 @@ jobs:
         run: |
           CURRENT_VERSION=$(./bin/bone version get)
           NEXT_VERSION=$(./bin/bone version get-next)
+          echo $CURRENT_VERSION
+          echo $NEXT_VERSION
           ./bin/bone version up
           git push origin $NEXT_VERSION
