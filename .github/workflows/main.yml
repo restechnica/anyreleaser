@@ -40,6 +40,6 @@ jobs:
       - name: release
         run: |
           CURRENT_VERSION=$(./bin/bone version get)
+          NEXT_VERSION=$(./bin/bone version get-next)
           ./bin/bone version up
-          NEXT_VERSION=$(./bin/bone version get)
           git push origin $NEXT_VERSION
