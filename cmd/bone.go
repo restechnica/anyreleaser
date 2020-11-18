@@ -18,7 +18,7 @@ func NewApp() (app *cli.App) {
 	}
 
 	app.Commands = []*cli.Command{
-		NewSemverCommand(app),
+		NewVersionCommand(app),
 	}
 
 	return
