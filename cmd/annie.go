@@ -1,10 +1,12 @@
 package cmd
 
 import (
+	"github.com/urfave/cli/v2"
+
 	"github.com/restechnica/anyreleaser/cmd/get"
+	_init "github.com/restechnica/anyreleaser/cmd/init"
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
-	"github.com/urfave/cli/v2"
 )
 
 // NewApp creates a new CLI app.
@@ -22,6 +24,7 @@ func NewApp() (app *cli.App) {
 
 	app.Commands = []*cli.Command{
 		get.NewCommand(app),
+		_init.NewCommand(app),
 		predict.NewCommand(app),
 		release.NewCommand(app),
 	}
