@@ -3,9 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	"github.com/restechnica/backbone-cli/internal/commands"
-	"github.com/restechnica/backbone-cli/internal/git"
-	"github.com/restechnica/backbone-cli/internal/semver"
+	"github.com/restechnica/anyreleaser/internal/commands"
+	"github.com/restechnica/anyreleaser/internal/git"
+	"github.com/restechnica/anyreleaser/internal/semver"
 	"github.com/urfave/cli/v2"
 )
 

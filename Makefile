@@ -3,10 +3,10 @@
 
 # build the project
 build:
-	go build -o bin/bone
-	GOOS=windows GOARCH=amd64 go build -o bin/bone-windows-amd64
-	GOOS=linux GOARCH=amd64 go build -o bin/bone-linux-amd64
-	GOOS=darwin GOARCH=amd64 go build -o bin/bone-darwin-amd64
+	go build -o bin/annie
+	GOOS=windows GOARCH=amd64 go build -o bin/annie-windows-amd64
+	GOOS=linux GOARCH=amd64 go build -o bin/annie-linux-amd64
+	GOOS=darwin GOARCH=amd64 go build -o bin/annie-darwin-amd64
 
 # run quality assessment checks
 check:
@@ -41,7 +41,7 @@ provision:
 
 # run the binary
 run:
-	./bin/bone
+	./bin/annie
 
 # run tests
 test:

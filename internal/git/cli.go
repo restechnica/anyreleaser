@@ -3,7 +3,7 @@ package git
 import (
 	"strings"
 
-	"github.com/restechnica/backbone-cli/internal/commands"
+	"github.com/restechnica/anyreleaser/internal/commands"
 )
 
 const DefaultTag = "0.0.0"

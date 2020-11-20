@@ -3,7 +3,7 @@ package semver
 import (
 	"testing"
 
-	"github.com/restechnica/backbone-cli/internal/git"
+	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/stretchr/testify/assert"
 )
 

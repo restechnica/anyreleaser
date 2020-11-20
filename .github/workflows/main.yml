@@ -39,9 +39,9 @@ jobs:
 
       - name: release
         run: |
-          CURRENT_VERSION=$(./bin/bone version get)
-          NEXT_VERSION=$(./bin/bone version get-next)
+          CURRENT_VERSION=$(./bin/annie version get)
+          NEXT_VERSION=$(./bin/annie version get-next)
           echo current version: $CURRENT_VERSION
           echo next version: $NEXT_VERSION
-          ./bin/bone version up
+          ./bin/annie version up
           git push origin $NEXT_VERSION

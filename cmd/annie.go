@@ -7,7 +7,7 @@ import (
 // NewApp creates a new CLI app.
 // Returns the cli app.
 func NewApp() (app *cli.App) {
-	var command = "bone"
+	var command = "annie"
 	var description = "a CLI which serves as a backbone for your projects"
 
 	app = &cli.App{

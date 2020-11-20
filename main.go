@@ -4,7 +4,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/restechnica/backbone-cli/cmd"
+	"github.com/restechnica/anyreleaser/cmd"
 )
 
 func main() {

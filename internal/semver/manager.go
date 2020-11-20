@@ -1,7 +1,7 @@
 package semver
 
 import (
-	"github.com/restechnica/backbone-cli/internal/git"
+	"github.com/restechnica/anyreleaser/internal/git"
 )
 
 type Manager struct {

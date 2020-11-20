@@ -1,4 +1,4 @@
-module github.com/restechnica/backbone-cli
+module github.com/restechnica/anyreleaser
 
 go 1.15
 

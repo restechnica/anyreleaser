@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"regexp"
 
-	"github.com/restechnica/backbone-cli/internal/git"
+	"github.com/restechnica/anyreleaser/internal/git"
 )
 
 var DefaultFeatureRegex = regexp.MustCompile(`(\[feature]|feature/)`)
