@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"github.com/restechnica/anyreleaser/cmd/get"
+	"github.com/restechnica/anyreleaser/cmd/predict"
+	"github.com/restechnica/anyreleaser/cmd/release"
 	"github.com/urfave/cli/v2"
 )
 
@@ -18,7 +21,9 @@ func NewApp() (app *cli.App) {
 	}
 
 	app.Commands = []*cli.Command{
-		NewVersionCommand(app),
+		get.NewCommand(app),
+		predict.NewCommand(app),
+		release.NewCommand(app),
 	}
 
 	return
