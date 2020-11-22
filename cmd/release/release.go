@@ -6,13 +6,18 @@ import (
 	"github.com/restechnica/anyreleaser/cmd/release/version"
 )
 
+const (
+	command     = "release"
+	description = "all things releasing"
+)
+
+var (
+	aliases = []string{"r"}
+)
+
 // NewCommand a command to release the current semver version.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
-	var command = "release"
-	var description = "all things releasing"
-	var aliases = []string{"r"}
-
 	var subcommands = []*cli.Command{
 		version.NewCommand(app),
 	}

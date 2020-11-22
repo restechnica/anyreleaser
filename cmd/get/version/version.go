@@ -9,22 +9,18 @@ import (
 	"github.com/restechnica/anyreleaser/internal/git"
 )
 
+const (
+	command     = "version"
+	description = "gets the current semver version"
+)
+
+var (
+	aliases = []string{"v"}
+)
+
 // NewCommand a command to get the current semver version.
 //// Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
-	var command = "version"
-	var description = "gets the current semver version"
-	var aliases = []string{"v"}
-
-	var action = func(c *cli.Context) (err error) {
-		var commander = commands.NewExecCommander()
-		var gitService = git.NewCLIService(commander)
-
-		fmt.Println(gitService.GetTag())
-
-		return
-	}
-
 	return &cli.Command{
 		Action:          action,
 		Aliases:         aliases,
@@ -33,4 +29,13 @@ func NewCommand(app *cli.App) *cli.Command {
 		Name:            command,
 		Usage:           description,
 	}
+}
+
+func action(c *cli.Context) (err error) {
+	var commander = commands.NewExecCommander()
+	var gitService = git.NewCLIService(commander)
+
+	fmt.Println(gitService.GetTag())
+
+	return
 }

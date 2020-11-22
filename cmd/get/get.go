@@ -6,13 +6,18 @@ import (
 	"github.com/restechnica/anyreleaser/cmd/get/version"
 )
 
+const (
+	command     = "get"
+	description = "get information from the cli"
+)
+
+var (
+	aliases = []string{"g"}
+)
+
 // NewCommand a command to get the current semver version.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
-	var command = "get"
-	var description = "get information from the cli"
-	var aliases = []string{"g"}
-
 	var subcommands = []*cli.Command{
 		version.NewCommand(app),
 	}
