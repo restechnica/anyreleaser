@@ -91,7 +91,7 @@ func (pipe EnvScriptsPipe) Run(ctx *cli.Context) (err error) {
 
 		for key, value := range vars {
 			if err = os.Setenv(key, value); err != nil {
-				return fmt.Errorf("could not set env var '%s=%s' from '%s=%s'",
+				return fmt.Errorf("could not set env var '%s=%s' from '%s %s'",
 					key, value, script.Bin, script.Path)
 			}
 		}
