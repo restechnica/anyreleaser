@@ -44,17 +44,17 @@ func NewCommand(app *cli.App) *cli.Command {
 func action(context *cli.Context) (err error) {
 	var version string
 
-	var config = context.App.Metadata["config"].(config.Root)
+	var cfg = context.App.Metadata["cfg"].(config.Root)
 
 	if context.IsSet("strategy") {
-		config.Semver.Strategy = context.String("strategy")
+		cfg.Semver.Strategy = context.String("strategy")
 	}
 
 	var commander = commands.NewExecCommander()
 	var gitService = git.NewCLIService(commander)
-	var semverManager = semver.NewManager(config, gitService)
+	var semverManager = semver.NewManager(cfg, gitService)
 
-	var strategy = semverManager.GetStrategy(config.Semver.Strategy)
+	var strategy = semverManager.GetStrategy(cfg.Semver.Strategy)
 	var tag = gitService.GetTag()
 
 	if version, err = strategy.Increment(tag); err != nil {
