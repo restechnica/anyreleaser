@@ -31,7 +31,7 @@ var (
 )
 
 // NewCommand a command to predict the next semver version.
-//// Returns the CLI command.
+// Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	return &cli.Command{
 		Action:          action,
