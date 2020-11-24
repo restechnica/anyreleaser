@@ -1,9 +1,8 @@
 package release
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/release/version"
+	"github.com/urfave/cli/v2"
 )
 
 const (

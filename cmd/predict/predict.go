@@ -1,9 +1,8 @@
 package predict
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/predict/version"
+	"github.com/urfave/cli/v2"
 )
 
 const (

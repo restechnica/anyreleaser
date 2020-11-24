@@ -1,9 +1,8 @@
 package get
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/get/version"
+	"github.com/urfave/cli/v2"
 )
 
 const (

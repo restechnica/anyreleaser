@@ -3,10 +3,9 @@ package version
 import (
 	"fmt"
 
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/internal/commands"
 	"github.com/restechnica/anyreleaser/internal/git"
+	"github.com/urfave/cli/v2"
 )
 
 const (
@@ -19,7 +18,7 @@ var (
 )
 
 // NewCommand a command to get the current semver version.
-//// Returns the CLI command.
+// Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	return &cli.Command{
 		Action:          action,
