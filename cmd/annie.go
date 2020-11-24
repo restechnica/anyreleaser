@@ -48,12 +48,6 @@ func NewApp() (app *cli.App) {
 }
 
 func before(context *cli.Context) (err error) {
-	// create runner
-	// create pipeline
-	// create config pipe, which sets config in pipeline
-	// add config pipe to pipeline
-	// create git unshallow pipe, within its run method config should be checked
-
 	var pipeline = app.Pipeline{}
 
 	pipeline.Add(app.DefaultConfigPipe{})
