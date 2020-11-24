@@ -1,13 +1,11 @@
 package cmd
 
 import (
-	"fmt"
-
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/get"
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
+	"github.com/restechnica/anyreleaser/internal/app"
+	"github.com/urfave/cli/v2"
 )
 
 const (
@@ -49,8 +47,20 @@ func NewApp() (app *cli.App) {
 	return app
 }
 
-func before(c *cli.Context) (err error) {
-	var config = c.String("config")
-	fmt.Println(config)
-	return
+func before(context *cli.Context) (err error) {
+	// create runner
+	// create pipeline
+	// create config pipe, which sets config in pipeline
+	// add config pipe to pipeline
+	// create git unshallow pipe, within its run method config should be checked
+
+	var pipeline = app.Pipeline{}
+
+	pipeline.Add(app.DefaultConfigPipe{})
+	pipeline.Add(app.ConfigPipe{})
+	pipeline.Add(app.GitUnshallowPipe{})
+	pipeline.Add(app.EnvFilesPipe{})
+	pipeline.Add(app.EnvVarsPipe{})
+
+	return pipeline.Run(context)
 }
