@@ -50,9 +50,18 @@ func NewApp() (app *cli.App) {
 func before(context *cli.Context) (err error) {
 	var pipeline = app.Pipeline{}
 
+	// populate config
 	pipeline.Add(app.DefaultConfigPipe{})
 	pipeline.Add(app.ConfigPipe{})
+
+	// populate commander
+	pipeline.Add(app.CommanderPipe{})
+
+	// fetch tags
 	pipeline.Add(app.GitUnshallowPipe{})
+
+	// set up env variables
+	pipeline.Add(app.EnvScriptsPipe{})
 	pipeline.Add(app.EnvFilesPipe{})
 	pipeline.Add(app.EnvVarsPipe{})
 

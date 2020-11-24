@@ -8,7 +8,6 @@ type Env struct {
 
 type EnvScript struct {
 	Bin  string `yaml:"bin,omitempty"`
-	Mode string `yaml:"mode,omitempty"`
 	Path string `yaml:"path,omitempty"`
 }
 
