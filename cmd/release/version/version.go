@@ -1,11 +1,11 @@
 package version
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/internal/commands"
+	"github.com/restechnica/anyreleaser/internal/config"
 	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/restechnica/anyreleaser/internal/semver"
+	"github.com/urfave/cli/v2"
 )
 
 const (
@@ -41,16 +41,20 @@ func NewCommand(app *cli.App) *cli.Command {
 	}
 }
 
-func action(c *cli.Context) (err error) {
+func action(context *cli.Context) (err error) {
 	var version string
 
-	var strategyName = c.String("strategy")
+	var config = context.App.Metadata["config"].(config.Root)
+
+	if context.IsSet("strategy") {
+		config.Semver.Strategy = context.String("strategy")
+	}
 
 	var commander = commands.NewExecCommander()
 	var gitService = git.NewCLIService(commander)
-	var semverManager = semver.NewManager(gitService)
+	var semverManager = semver.NewManager(config, gitService)
 
-	var strategy = semverManager.GetStrategy(strategyName)
+	var strategy = semverManager.GetStrategy(config.Semver.Strategy)
 	var tag = gitService.GetTag()
 
 	if version, err = strategy.Increment(tag); err != nil {

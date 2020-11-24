@@ -3,6 +3,7 @@ package semver
 import (
 	"testing"
 
+	"github.com/restechnica/anyreleaser/internal/config"
 	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/stretchr/testify/assert"
 )
@@ -26,7 +27,7 @@ func TestManager_GetStrategy(t *testing.T) {
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
 			var fakeGitService = git.CLIService{}
-			var manager = NewManager(fakeGitService)
+			var manager = NewManager(config.Root{}, fakeGitService)
 			var got = manager.GetStrategy(test.StrategyName)
 			assert.IsType(t, test.Want, got, `want: "%s", got: "%s"`, test.Want, got)
 		})

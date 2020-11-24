@@ -2,14 +2,10 @@ package semver
 
 import (
 	"fmt"
-	"regexp"
+	"strings"
 
 	"github.com/restechnica/anyreleaser/internal/git"
 )
-
-var DefaultFeatureRegex = regexp.MustCompile(`(\[feature]|feature/)`)
-var DefaultFixRegex = regexp.MustCompile(`(\[fix]|fix/)`)
-var DefaultReleaseRegex = regexp.MustCompile(`(\[release]|release/)`)
 
 // GitCommit strategy name for GitCommitStrategy.
 const GitCommit = "git-commit"
@@ -17,13 +13,14 @@ const GitCommit = "git-commit"
 // GitCommitStrategy implementation of the Strategy interface.
 // It makes use of several matching strategies based on git commit messages.
 type GitCommitStrategy struct {
+	matches    map[string]string
 	gitService git.Service
 }
 
 // NewGitCommitStrategy creates a new GitCommitStrategy.
 // Returns the new GitCommitStrategy.
-func NewGitCommitStrategy(gitService git.Service) GitCommitStrategy {
-	return GitCommitStrategy{gitService: gitService}
+func NewGitCommitStrategy(matches map[string]string, gitService git.Service) GitCommitStrategy {
+	return GitCommitStrategy{matches: matches, gitService: gitService}
 }
 
 // Increment increments a given version using the GitCommitStrategy.
@@ -43,22 +40,21 @@ func (strategy GitCommitStrategy) Increment(targetVersion string) (nextVersion s
 	return matchedStrategy.Increment(targetVersion)
 }
 
-// GetMatchedStrategy gets the strategy that matches specific tokens within the git commit message.
+// GetMatchedStrategy gets the strategy that testMatches specific tokens within the git commit message.
 // It returns the matched strategy.
 func (strategy GitCommitStrategy) GetMatchedStrategy(message string) (matched Strategy, err error) {
-	if DefaultFixRegex.MatchString(message) {
-		matched = NewPatchStrategy()
-		return
-	}
-
-	if DefaultFeatureRegex.MatchString(message) {
-		matched = NewMinorStrategy()
-		return
-	}
-
-	if DefaultReleaseRegex.MatchString(message) {
-		matched = NewMajorStrategy()
-		return
+	for match, strategy := range strategy.matches {
+		if strings.Contains(message, match) {
+			switch strategy {
+			case Patch:
+				matched = NewPatchStrategy()
+			case Minor:
+				matched = NewMinorStrategy()
+			case Major:
+				matched = NewMajorStrategy()
+			}
+			return
+		}
 	}
 
 	return matched, fmt.Errorf(`could not match a strategy to the commit message "%s"`, message)
