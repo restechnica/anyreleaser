@@ -14,7 +14,7 @@ var (
 	aliases = []string{"p"}
 )
 
-// NewCommand a command to predict the current semver version.
+// NewCommand a command to get future information from the cli.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	var subcommands = []*cli.Command{

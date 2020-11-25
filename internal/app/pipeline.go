@@ -63,8 +63,10 @@ type EnvFilesPipe struct{}
 func (pipe EnvFilesPipe) Run(ctx *cli.Context) (err error) {
 	var cfg = ctx.App.Metadata["config"].(config.Root)
 
-	if err = godotenv.Overload(cfg.Env.Files...); err != nil {
-		return fmt.Errorf("could not set env file variables: %s", err)
+	if len(cfg.Env.Files) > 0 {
+		if err = godotenv.Overload(cfg.Env.Files...); err != nil {
+			return fmt.Errorf("could not set env file variables: %s", err)
+		}
 	}
 
 	return
@@ -114,13 +116,18 @@ func (pipe EnvVarsPipe) Run(ctx *cli.Context) (err error) {
 	return
 }
 
-type GitUnshallowPipe struct{}
+type GitPipe struct{}
 
-func (pipe GitUnshallowPipe) Run(ctx *cli.Context) (err error) {
+func (pipe GitPipe) Run(ctx *cli.Context) (err error) {
 	var cfg = ctx.App.Metadata["config"].(config.Root)
+	var cmder = ctx.App.Metadata["commander"].(commands.Commander)
 
-	if cfg.Versioning.Git.Unshallow {
-		fmt.Println("on")
+	for key, value := range cfg.Git.Config {
+		_ = cmder.Run("git", "config", key, value)
+	}
+
+	if cfg.Git.Unshallow {
+		_ = cmder.Run("git", "fetch", "--unshallow")
 	}
 
 	return

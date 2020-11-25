@@ -11,16 +11,25 @@ type EnvScript struct {
 	Path string `yaml:"path,omitempty"`
 }
 
+type Git struct {
+	Config    map[string]string `yaml:"config,omitempty"`
+	Unshallow bool              `yaml:"unshallow,omitempty"`
+}
+
+func NewGit() Git {
+	return Git{Unshallow: true}
+}
+
 type Root struct {
-	Env        Env        `yaml:"env,omitempty"`
-	Semver     Semver     `yaml:"semver,omitempty"`
-	Versioning Versioning `yaml:"version,omitempty"`
+	Env    Env    `yaml:"env,omitempty"`
+	Git    Git    `yaml:"git,omitempty"`
+	Semver Semver `yaml:"semver,omitempty"`
 }
 
 func NewRoot() (root Root) {
 	return Root{
-		Semver:     NewSemver(),
-		Versioning: NewVersioning(),
+		Git:    NewGit(),
+		Semver: NewSemver(),
 	}
 }
 
@@ -43,31 +52,4 @@ func NewSemver() Semver {
 			`release/`:  "major",
 		},
 	}
-}
-
-type Versioning struct {
-	Files []VersioningFile `yaml:"files,omitempty"`
-	Git   VersioningGit    `yaml:"git,omitempty"`
-}
-
-func NewVersioning() Versioning {
-	return Versioning{
-		Git: NewVersioningGit(),
-	}
-}
-
-type VersioningFile struct {
-	Mode       string `yaml:"mode,omitempty"`
-	Enabled    bool   `yaml:"enabled,omitempty"`
-	Path       string `yaml:"path,omitempty"`
-	Expression string `yaml:"expression,omitempty"`
-}
-
-type VersioningGit struct {
-	Tags      bool `yaml:"tags,omitempty"`
-	Unshallow bool `yaml:"unshallow,omitempty"`
-}
-
-func NewVersioningGit() VersioningGit {
-	return VersioningGit{Tags: true, Unshallow: true}
 }

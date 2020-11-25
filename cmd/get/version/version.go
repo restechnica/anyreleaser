@@ -32,9 +32,9 @@ func NewCommand(app *cli.App) *cli.Command {
 
 func action(c *cli.Context) (err error) {
 	var commander = commands.NewExecCommander()
-	var gitService = git.NewCLIService(commander)
+	var _git = git.NewCLIService(commander)
 
-	fmt.Println(gitService.GetTag())
+	fmt.Println(_git.GetTag())
 
 	return
 }

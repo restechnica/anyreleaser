@@ -7,14 +7,14 @@ import (
 
 const (
 	command     = "release"
-	description = "all things releasing"
+	description = "makes releases"
 )
 
 var (
 	aliases = []string{"r"}
 )
 
-// NewCommand a command to release the current semver version.
+// NewCommand a command to create releases.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	var subcommands = []*cli.Command{

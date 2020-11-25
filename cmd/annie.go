@@ -4,6 +4,7 @@ import (
 	"github.com/restechnica/anyreleaser/cmd/get"
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
+	"github.com/restechnica/anyreleaser/cmd/set"
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/urfave/cli/v2"
 )
@@ -42,6 +43,7 @@ func NewApp() (app *cli.App) {
 		get.NewCommand(app),
 		predict.NewCommand(app),
 		release.NewCommand(app),
+		set.NewCommand(app),
 	}
 
 	return app
@@ -56,9 +58,6 @@ func before(context *cli.Context) (err error) {
 
 	// populate commander
 	pipeline.Add(app.CommanderPipe{})
-
-	// fetch tags
-	pipeline.Add(app.GitUnshallowPipe{})
 
 	// set up env variables
 	pipeline.Add(app.EnvScriptsPipe{})
