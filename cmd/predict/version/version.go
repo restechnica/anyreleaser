@@ -47,7 +47,7 @@ func NewCommand(app *cli.App) *cli.Command {
 func action(context *cli.Context) (err error) {
 	var version string
 
-	var cfg = context.App.Metadata["cfg"].(config.Root)
+	var cfg = context.App.Metadata["config"].(config.Root)
 
 	if context.IsSet("strategy") {
 		cfg.Semver.Strategy = context.String("strategy")

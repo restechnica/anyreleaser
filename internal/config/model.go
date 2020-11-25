@@ -43,13 +43,13 @@ type Semver struct {
 func NewSemver() Semver {
 	return Semver{
 		Strategy: "auto",
-		Matches: map[string]string{
-			`[fix]`:     "patch",
-			`fix/`:      "patch",
-			`[feature]`: "minor",
-			`feature/`:  "minor",
-			`[release]`: "major",
-			`release/`:  "major",
+		Matches:  map[string]string{
+			//`[fix]`:     "patch",
+			//`fix/`:      "patch",
+			//`[feature]`: "minor",
+			//`feature/`:  "minor",
+			//`[release]`: "major",
+			//`release/`:  "major",
 		},
 	}
 }
