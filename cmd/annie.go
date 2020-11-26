@@ -19,7 +19,7 @@ var (
 		Name:    "config",
 		Aliases: []string{"c"},
 		Usage:   "load configuration from a file",
-		Value:   "./example/.anyreleaser.yaml",
+		Value:   ".anyreleaser.yaml",
 	}
 
 	flags = []cli.Flag{
