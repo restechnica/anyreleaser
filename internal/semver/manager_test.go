@@ -3,7 +3,7 @@ package semver
 import (
 	"testing"
 
-	"github.com/restechnica/anyreleaser/internal/config"
+	"github.com/restechnica/anyreleaser/internal/app/config"
 	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/stretchr/testify/assert"
 )

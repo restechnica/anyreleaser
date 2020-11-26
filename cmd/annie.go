@@ -5,7 +5,7 @@ import (
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
 	"github.com/restechnica/anyreleaser/cmd/set"
-	"github.com/restechnica/anyreleaser/internal/app"
+	"github.com/restechnica/anyreleaser/internal/app/flow"
 	"github.com/urfave/cli/v2"
 )
 
@@ -50,19 +50,19 @@ func NewApp() (app *cli.App) {
 }
 
 func before(context *cli.Context) (err error) {
-	var pipeline = app.Pipeline{}
+	var pipeline = flow.Pipeline{}
 
 	// populate config
-	pipeline.Add(app.DefaultConfigPipe{})
-	pipeline.Add(app.ConfigPipe{})
+	pipeline.Add(flow.LoadDefaultConfig{})
+	pipeline.Add(flow.LoadConfig{})
 
 	// populate commander
-	pipeline.Add(app.CommanderPipe{})
+	pipeline.Add(flow.SetCommander{})
 
 	// set up env variables
-	pipeline.Add(app.EnvScriptsPipe{})
-	pipeline.Add(app.EnvFilesPipe{})
-	pipeline.Add(app.EnvVarsPipe{})
+	pipeline.Add(flow.LoadEnvScripts{})
+	pipeline.Add(flow.LoadEnvFiles{})
+	pipeline.Add(flow.LoadEnvVars{})
 
 	return pipeline.Run(context)
 }

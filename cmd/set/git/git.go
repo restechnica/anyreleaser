@@ -1,7 +1,7 @@
 package git
 
 import (
-	"github.com/restechnica/anyreleaser/internal/app"
+	"github.com/restechnica/anyreleaser/internal/app/flow"
 	"github.com/urfave/cli/v2"
 )
 
@@ -26,7 +26,7 @@ func NewCommand(app *cli.App) *cli.Command {
 }
 
 func action(context *cli.Context) (err error) {
-	var pipeline = app.Pipeline{}
-	pipeline.Add(app.GitPipe{})
+	var pipeline = flow.Pipeline{}
+	pipeline.Add(flow.SetGit{})
 	return pipeline.Run(context)
 }

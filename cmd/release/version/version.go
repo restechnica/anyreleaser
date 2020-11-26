@@ -1,8 +1,8 @@
 package version
 
 import (
+	"github.com/restechnica/anyreleaser/internal/app/config"
 	"github.com/restechnica/anyreleaser/internal/commands"
-	"github.com/restechnica/anyreleaser/internal/config"
 	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/restechnica/anyreleaser/internal/semver"
 	"github.com/urfave/cli/v2"

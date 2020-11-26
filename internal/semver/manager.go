@@ -1,7 +1,7 @@
 package semver
 
 import (
-	"github.com/restechnica/anyreleaser/internal/config"
+	"github.com/restechnica/anyreleaser/internal/app/config"
 	"github.com/restechnica/anyreleaser/internal/git"
 )
 

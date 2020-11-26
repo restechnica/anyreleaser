@@ -7,6 +7,6 @@ git:
 semver:
   strategy: git-commit
   matches:
-    'fix/': "patch"
-    'feature/': "minor"
-    'release/': "major"
+    'fix/': patch
+    'feature/': minor
+    'release/': major
