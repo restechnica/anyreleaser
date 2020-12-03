@@ -16,10 +16,6 @@ type Git struct {
 	Unshallow bool              `yaml:"unshallow,omitempty"`
 }
 
-func NewGit() Git {
-	return Git{Unshallow: true}
-}
-
 type Root struct {
 	Env    Env    `yaml:"env,omitempty"`
 	Git    Git    `yaml:"git,omitempty"`
@@ -28,8 +24,13 @@ type Root struct {
 
 func NewRoot() (root Root) {
 	return Root{
-		Git:    NewGit(),
-		Semver: NewSemver(),
+		Git: Git{
+			Unshallow: true,
+		},
+		Semver: Semver{
+			Strategy: "auto",
+			Matches:  map[string]string{},
+		},
 	}
 }
 
@@ -38,18 +39,4 @@ type Semver struct {
 	Strategy string            `yaml:"strategy,omitempty"`
 	Matches  map[string]string `yaml:"matches,omitempty"`
 	Path     string            `yaml:"path,omitempty"`
-}
-
-func NewSemver() Semver {
-	return Semver{
-		Strategy: "auto",
-		Matches:  map[string]string{
-			//`[fix]`:     "patch",
-			//`fix/`:      "patch",
-			//`[feature]`: "minor",
-			//`feature/`:  "minor",
-			//`[release]`: "major",
-			//`release/`:  "major",
-		},
-	}
 }
