@@ -2,10 +2,11 @@ package flow
 
 import (
 	"fmt"
+	"testing"
+
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 type testPipelineFakePipe struct {

@@ -1,8 +1,9 @@
 package flow
 
 import (
-	"github.com/restechnica/anyreleaser/internal/commands"
 	"testing"
+
+	"github.com/restechnica/anyreleaser/internal/commands"
 
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/stretchr/testify/assert"
