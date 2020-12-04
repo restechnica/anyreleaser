@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"io/ioutil"
 	"testing"
 
@@ -46,8 +47,36 @@ func TestYAMLLoader_Load(t *testing.T) {
 				return data, nil
 			}
 
-			var got, _ = loader.Load("fake-path")
+			var got, err = loader.Load("fake-path")
+
+			assert.NoError(t, err)
 			assert.Equal(t, want, got, `want: "%s", got: "%s"`, want, got)
+		})
+	}
+
+	type ErrorTest struct {
+		Name           string
+		ReadFileError  error
+		UnmarshalError error
+	}
+
+	var errorTests = []ErrorTest{
+		{Name: "ReturnErrorOnReadFileError", ReadFileError: fmt.Errorf("some-error"), UnmarshalError: nil},
+		{Name: "ReturnErrorOnUnmarshalError", ReadFileError: nil, UnmarshalError: fmt.Errorf("some-error")},
+	}
+
+	for _, test := range errorTests {
+		t.Run(test.Name, func(t *testing.T) {
+			var loader = NewYAMLLoader()
+			loader.readFile = func(path string) ([]byte, error) {
+				return nil, test.ReadFileError
+			}
+			loader.unmarshal = func(data []byte, config *Root) (err error) {
+				return test.UnmarshalError
+			}
+
+			var _, got = loader.Load("fake-path")
+			assert.Error(t, got)
 		})
 	}
 }
@@ -82,8 +111,36 @@ func TestYAMLLoader_Overload(t *testing.T) {
 				return data, nil
 			}
 
-			var got, _ = loader.Overload("fake-path", test.Original)
+			var got, err = loader.Overload("fake-path", test.Original)
+
+			assert.NoError(t, err)
 			assert.Equal(t, want, got, `want: "%s", got: "%s"`, want, got)
+		})
+	}
+
+	type ErrorTest struct {
+		Name           string
+		ReadFileError  error
+		UnmarshalError error
+	}
+
+	var errorTests = []ErrorTest{
+		{Name: "ReturnErrorOnReadFileError", ReadFileError: fmt.Errorf("some-error"), UnmarshalError: nil},
+		{Name: "ReturnErrorOnUnmarshalError", ReadFileError: nil, UnmarshalError: fmt.Errorf("some-error")},
+	}
+
+	for _, test := range errorTests {
+		t.Run(test.Name, func(t *testing.T) {
+			var loader = NewYAMLLoader()
+			loader.readFile = func(path string) ([]byte, error) {
+				return nil, test.ReadFileError
+			}
+			loader.unmarshal = func(data []byte, config *Root) (err error) {
+				return test.UnmarshalError
+			}
+
+			var _, got = loader.Overload("fake-path", Root{})
+			assert.Error(t, got)
 		})
 	}
 }
