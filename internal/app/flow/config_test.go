@@ -13,12 +13,16 @@ type testLoadConfigLoaderMock struct {
 	mock.Mock
 }
 
-func (mock testLoadConfigLoaderMock) Load(path string) (cfg config.Root, err error) {
+func NewTestLoadConfigLoaderMock() *testLoadConfigLoaderMock {
+	return &testLoadConfigLoaderMock{}
+}
+
+func (mock *testLoadConfigLoaderMock) Load(path string) (cfg config.Root, err error) {
 	var args = mock.Called(path)
 	return args.Get(0).(config.Root), args.Error(1)
 }
 
-func (mock testLoadConfigLoaderMock) Overload(path string, cfg config.Root) (config.Root, error) {
+func (mock *testLoadConfigLoaderMock) Overload(path string, cfg config.Root) (config.Root, error) {
 	var args = mock.Called(path, cfg)
 	return args.Get(0).(config.Root), args.Error(1)
 }
@@ -27,7 +31,7 @@ func TestLoadConfig_Run(t *testing.T) {
 	t.Run("HappyPath", func(t *testing.T) {
 		var want = config.Root{Git: config.Git{Unshallow: true}}
 
-		var loader = testLoadConfigLoaderMock{}
+		var loader = NewTestLoadConfigLoaderMock()
 		loader.On("Overload", mock.Anything, mock.Anything).Return(want, nil)
 
 		var ctx = app.NewContext()
