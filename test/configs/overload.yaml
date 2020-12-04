@@ -1,0 +1,8 @@
+---
+env:
+  files:
+    - ./some-path/some-file
+git:
+  unshallow: false
+semver:
+  strategy: patch

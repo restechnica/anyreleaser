@@ -1,18 +1,22 @@
 package predict
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/predict/version"
+	"github.com/urfave/cli/v2"
 )
 
-// NewCommand a command to predict the current semver version.
+const (
+	command     = "predict"
+	description = "get future information from the cli"
+)
+
+var (
+	aliases = []string{"p"}
+)
+
+// NewCommand a command to get future information from the cli.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
-	var command = "predict"
-	var description = "get future information from the cli"
-	var aliases = []string{"p"}
-
 	var subcommands = []*cli.Command{
 		version.NewCommand(app),
 	}

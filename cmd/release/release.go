@@ -1,18 +1,22 @@
 package release
 
 import (
-	"github.com/urfave/cli/v2"
-
 	"github.com/restechnica/anyreleaser/cmd/release/version"
+	"github.com/urfave/cli/v2"
 )
 
-// NewCommand a command to release the current semver version.
+const (
+	command     = "release"
+	description = "makes releases"
+)
+
+var (
+	aliases = []string{"r"}
+)
+
+// NewCommand a command to create releases.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
-	var command = "release"
-	var description = "all things releasing"
-	var aliases = []string{"r"}
-
 	var subcommands = []*cli.Command{
 		version.NewCommand(app),
 	}
