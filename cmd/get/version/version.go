@@ -30,7 +30,7 @@ func NewCommand(app *cli.App) *cli.Command {
 	}
 }
 
-func action(c *cli.Context) (err error) {
+func action(clictx *cli.Context) (err error) {
 	var commander = commands.NewExecCommander()
 	var _git = git.NewCLIService(commander)
 
