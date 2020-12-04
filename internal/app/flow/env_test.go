@@ -2,9 +2,10 @@ package flow
 
 import (
 	"fmt"
-	"github.com/stretchr/testify/mock"
 	"os"
 	"testing"
+
+	"github.com/stretchr/testify/mock"
 
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"

@@ -1,11 +1,12 @@
 package flow
 
 import (
+	"testing"
+
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 type testGitCommanderMock struct {
