@@ -28,7 +28,7 @@ func (mock *testLoadConfigLoaderMock) Overload(path string, cfg config.Root) (co
 }
 
 func TestLoadConfig_Run(t *testing.T) {
-	t.Run("HappyPath", func(t *testing.T) {
+	t.Run("CheckOverloadedConfig", func(t *testing.T) {
 		var want = config.Root{Git: config.Git{Unshallow: true}}
 
 		var loader = NewTestLoadConfigLoaderMock()
