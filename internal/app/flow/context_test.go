@@ -1,11 +1,12 @@
 package flow
 
 import (
+	"testing"
+
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"
 	"github.com/stretchr/testify/assert"
 	"github.com/urfave/cli/v2"
-	"testing"
 )
 
 func TestPersistAppContext_Run(t *testing.T) {
