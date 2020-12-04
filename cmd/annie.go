@@ -58,7 +58,7 @@ func before(clictx *cli.Context) (err error) {
 
 	pipeline.Add(flow.SetCommander{})
 	pipeline.Add(flow.LoadDefaultConfig{})
-	pipeline.Add(flow.LoadConfig{ConfigPath: configPath})
+	pipeline.Add(flow.NewLoadConfig(configPath))
 	pipeline.Add(flow.LoadEnvScripts{})
 	pipeline.Add(flow.LoadEnvFiles{})
 	pipeline.Add(flow.LoadEnvVars{})

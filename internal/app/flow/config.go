@@ -7,24 +7,28 @@ import (
 
 type LoadConfig struct {
 	ConfigPath string
+	Loader     config.Loader
+}
+
+func NewLoadConfig(path string) LoadConfig {
+	return LoadConfig{
+		ConfigPath: path,
+		Loader:     config.NewYAMLLoader(),
+	}
 }
 
 func (pipe LoadConfig) Run(ctx *app.Context) (err error) {
 	var cfg = ctx.Config
 	var path = pipe.ConfigPath
 
-	var loader = config.NewYAMLLoader()
-
-	if cfg, err = loader.Overload(path, cfg); err == nil {
+	if cfg, err = pipe.Loader.Overload(path, cfg); err == nil {
 		ctx.Config = cfg
 	}
 
 	return
 }
 
-type LoadDefaultConfig struct {
-	ConfigPath string
-}
+type LoadDefaultConfig struct{}
 
 func (pipe LoadDefaultConfig) Run(ctx *app.Context) (err error) {
 	var cfg = config.NewRoot()
