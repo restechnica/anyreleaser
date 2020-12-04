@@ -33,7 +33,8 @@ func TestLoadConfig_Run(t *testing.T) {
 		var ctx = app.NewContext()
 		ctx.Config = config.NewRoot()
 
-		var pipe = LoadConfig{ConfigPath: "test", Loader: loader}
+		var pipe = NewLoadConfig("test")
+		pipe.Loader = loader
 		var err = pipe.Run(ctx)
 
 		var got = ctx.Config
