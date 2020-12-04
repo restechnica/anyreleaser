@@ -2,6 +2,7 @@ package version
 
 import (
 	"fmt"
+
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/flow"
 	"github.com/restechnica/anyreleaser/internal/git"
