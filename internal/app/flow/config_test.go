@@ -13,7 +13,7 @@ type testLoadConfigLoaderMock struct {
 	mock.Mock
 }
 
-func NewTestLoadConfigLoaderMock() *testLoadConfigLoaderMock {
+func newTestLoadConfigLoaderMock() *testLoadConfigLoaderMock {
 	return &testLoadConfigLoaderMock{}
 }
 
@@ -31,7 +31,7 @@ func TestLoadConfig_Run(t *testing.T) {
 	t.Run("CheckOverloadedConfig", func(t *testing.T) {
 		var want = config.Root{Git: config.Git{Unshallow: true}}
 
-		var loader = NewTestLoadConfigLoaderMock()
+		var loader = newTestLoadConfigLoaderMock()
 		loader.On("Overload", mock.Anything, mock.Anything).Return(want, nil)
 
 		var ctx = app.NewContext()
