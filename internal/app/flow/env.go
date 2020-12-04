@@ -4,19 +4,16 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/restechnica/anyreleaser/internal/app"
+
 	"github.com/joho/godotenv"
-	"github.com/restechnica/anyreleaser/internal/app/config"
-	"github.com/restechnica/anyreleaser/internal/commands"
-	"github.com/urfave/cli/v2"
 )
 
 type LoadEnvFiles struct{}
 
-func (pipe LoadEnvFiles) Run(ctx *cli.Context) (err error) {
-	var cfg = ctx.App.Metadata["config"].(config.Root)
-
-	if len(cfg.Env.Files) > 0 {
-		if err = godotenv.Overload(cfg.Env.Files...); err != nil {
+func (pipe LoadEnvFiles) Run(ctx *app.Context) (err error) {
+	if len(ctx.Config.Env.Files) > 0 {
+		if err = godotenv.Overload(ctx.Config.Env.Files...); err != nil {
 			return fmt.Errorf("could not set env file variables: %s", err)
 		}
 	}
@@ -26,11 +23,10 @@ func (pipe LoadEnvFiles) Run(ctx *cli.Context) (err error) {
 
 type LoadEnvScripts struct{}
 
-func (pipe LoadEnvScripts) Run(ctx *cli.Context) (err error) {
-	var cfg = ctx.App.Metadata["config"].(config.Root)
-	var cmder = ctx.App.Metadata["commander"].(commands.Commander)
+func (pipe LoadEnvScripts) Run(ctx *app.Context) (err error) {
+	var cmder = ctx.Commander
 
-	for _, script := range cfg.Env.Scripts {
+	for _, script := range ctx.Config.Env.Scripts {
 		var output string
 
 		if output, err = cmder.Output(script.Bin, script.Path); err != nil {
@@ -56,10 +52,8 @@ func (pipe LoadEnvScripts) Run(ctx *cli.Context) (err error) {
 
 type LoadEnvVars struct{}
 
-func (pipe LoadEnvVars) Run(ctx *cli.Context) (err error) {
-	var cfg = ctx.App.Metadata["config"].(config.Root)
-
-	for key, value := range cfg.Env.Vars {
+func (pipe LoadEnvVars) Run(ctx *app.Context) (err error) {
+	for key, value := range ctx.Config.Env.Vars {
 		if err = os.Setenv(key, value); err != nil {
 			return fmt.Errorf("could not set env var '%s=%s'", key, value)
 		}

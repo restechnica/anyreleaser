@@ -5,6 +5,7 @@ import (
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
 	"github.com/restechnica/anyreleaser/cmd/set"
+	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/flow"
 	"github.com/urfave/cli/v2"
 )
@@ -49,20 +50,19 @@ func NewApp() (app *cli.App) {
 	return app
 }
 
-func before(context *cli.Context) (err error) {
+func before(clictx *cli.Context) (err error) {
+	var configPath = clictx.String("config")
+
+	var appctx = app.NewContext()
 	var pipeline = flow.Pipeline{}
 
-	// populate config
-	pipeline.Add(flow.LoadDefaultConfig{})
-	pipeline.Add(flow.LoadConfig{})
-
-	// populate commander
 	pipeline.Add(flow.SetCommander{})
-
-	// set up env variables
+	pipeline.Add(flow.LoadDefaultConfig{})
+	pipeline.Add(flow.LoadConfig{ConfigPath: configPath})
 	pipeline.Add(flow.LoadEnvScripts{})
 	pipeline.Add(flow.LoadEnvFiles{})
 	pipeline.Add(flow.LoadEnvVars{})
+	pipeline.Add(flow.PersistAppContext{CLIContext: clictx})
 
-	return pipeline.Run(context)
+	return pipeline.Run(appctx)
 }

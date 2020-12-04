@@ -1,7 +1,9 @@
 package flow
 
-import "github.com/urfave/cli/v2"
+import (
+	"github.com/restechnica/anyreleaser/internal/app"
+)
 
 type Pipe interface {
-	Run(ctx *cli.Context) error
+	Run(ctx *app.Context) error
 }

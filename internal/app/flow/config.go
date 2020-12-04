@@ -1,26 +1,33 @@
 package flow
 
 import (
+	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"
-	"github.com/urfave/cli/v2"
 )
 
-type LoadConfig struct{}
+type LoadConfig struct {
+	ConfigPath string
+}
 
-func (pipe LoadConfig) Run(ctx *cli.Context) (err error) {
-	var cfg = ctx.App.Metadata["config"].(config.Root)
-	var path = ctx.String("config")
+func (pipe LoadConfig) Run(ctx *app.Context) (err error) {
+	var cfg = ctx.Config
+	var path = pipe.ConfigPath
 
-	if cfg, err = config.Overload(path, cfg); err == nil {
-		ctx.App.Metadata["config"] = cfg
+	var loader = config.NewYAMLLoader()
+
+	if cfg, err = loader.Overload(path, cfg); err == nil {
+		ctx.Config = cfg
 	}
 
 	return
 }
 
-type LoadDefaultConfig struct{}
+type LoadDefaultConfig struct {
+	ConfigPath string
+}
 
-func (pipe LoadDefaultConfig) Run(ctx *cli.Context) (err error) {
-	ctx.App.Metadata["config"] = config.NewRoot()
+func (pipe LoadDefaultConfig) Run(ctx *app.Context) (err error) {
+	var cfg = config.NewRoot()
+	ctx.Config = cfg
 	return
 }

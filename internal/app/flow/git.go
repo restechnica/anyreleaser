@@ -1,22 +1,19 @@
 package flow
 
 import (
-	"github.com/restechnica/anyreleaser/internal/app/config"
-	"github.com/restechnica/anyreleaser/internal/commands"
-	"github.com/urfave/cli/v2"
+	"github.com/restechnica/anyreleaser/internal/app"
 )
 
 type SetGit struct{}
 
-func (pipe SetGit) Run(ctx *cli.Context) (err error) {
-	var cfg = ctx.App.Metadata["config"].(config.Root)
-	var cmder = ctx.App.Metadata["commander"].(commands.Commander)
+func (pipe SetGit) Run(ctx *app.Context) (err error) {
+	var cmder = ctx.Commander
 
-	for key, value := range cfg.Git.Config {
+	for key, value := range ctx.Config.Git.Config {
 		_ = cmder.Run("git", "config", key, value)
 	}
 
-	if cfg.Git.Unshallow {
+	if ctx.Config.Git.Unshallow {
 		_ = cmder.Run("git", "fetch", "--unshallow")
 	}
 
