@@ -1,0 +1,24 @@
+---
+
+env:
+  files:
+    - ./some-path/some-file
+  scripts:
+    - bin: node
+      path: ./some-path/some-script.js
+  vars:
+    SOME_VAR: some_value
+    ANOTHER_VAR: another_value
+git:
+  config:
+    user.email: github-actions@github.com
+    user.name: github-actions
+  unshallow: true
+semver:
+  strategy: git-commit
+  bin: python3
+  matches:
+    'fix/': patch
+    'feature/': minor
+    'release/': major
+  path: ./some-path/some-script.py

@@ -1,24 +1,22 @@
-package get
+package set
 
 import (
-	"github.com/restechnica/anyreleaser/cmd/get/version"
+	"github.com/restechnica/anyreleaser/cmd/set/git"
 	"github.com/urfave/cli/v2"
 )
 
 const (
-	command     = "get"
-	description = "get information from the cli"
+	command     = "set"
+	description = "set information"
 )
 
-var (
-	aliases = []string{"g"}
-)
+var aliases = []string{"s"}
 
-// NewCommand a command to get information from the cli.
+// NewCommand a command to set information with the CLI.
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	var subcommands = []*cli.Command{
-		version.NewCommand(app),
+		git.NewCommand(app),
 	}
 
 	return &cli.Command{
