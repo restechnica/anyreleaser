@@ -2,9 +2,9 @@ package version
 
 import (
 	"fmt"
+	"github.com/restechnica/anyreleaser/internal/app"
+	"github.com/restechnica/anyreleaser/internal/app/flow"
 
-	"github.com/restechnica/anyreleaser/internal/app/config"
-	"github.com/restechnica/anyreleaser/internal/commands"
 	"github.com/restechnica/anyreleaser/internal/git"
 	"github.com/restechnica/anyreleaser/internal/semver"
 	"github.com/urfave/cli/v2"
@@ -44,20 +44,23 @@ func NewCommand(app *cli.App) *cli.Command {
 	}
 }
 
-func action(context *cli.Context) (err error) {
+func action(clictx *cli.Context) (err error) {
 	var version string
 
-	var cfg = context.App.Metadata["config"].(config.Root)
+	var appctx, ok = clictx.App.Metadata[flow.AppContext].(*app.Context)
 
-	if context.IsSet("strategy") {
-		cfg.Semver.Strategy = context.String("strategy")
+	if !ok {
+		return fmt.Errorf("something went wrong with fetching the app context from the cli context")
 	}
 
-	var commander = commands.NewExecCommander()
-	var gitService = git.NewCLIService(commander)
-	var semverManager = semver.NewManager(cfg, gitService)
+	if clictx.IsSet("strategy") {
+		appctx.Config.Semver.Strategy = clictx.String("strategy")
+	}
 
-	var strategy = semverManager.GetStrategy(cfg.Semver.Strategy)
+	var gitService = git.NewCLIService(appctx.Commander)
+	var semverManager = semver.NewManager(appctx.Config, gitService)
+
+	var strategy = semverManager.GetStrategy(appctx.Config.Semver.Strategy)
 	var tag = gitService.GetTag()
 
 	if version, err = strategy.Increment(tag); err != nil {
