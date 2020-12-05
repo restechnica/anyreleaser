@@ -4,32 +4,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/restechnica/anyreleaser/internal/mocks"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-type gitCommitStrategyGitServiceMock struct {
-	mock.Mock
-}
-
-func NewGitCommitStrategyGitServiceMock() *gitCommitStrategyGitServiceMock {
-	return &gitCommitStrategyGitServiceMock{}
-}
-
-func (mock *gitCommitStrategyGitServiceMock) CreateTag(tag string) (err error) {
-	args := mock.Called(tag)
-	return args.Error(0)
-}
-
-func (mock *gitCommitStrategyGitServiceMock) GetLatestCommitMessage() (message string, err error) {
-	args := mock.Called()
-	return args.String(0), args.Error(1)
-}
-
-func (mock *gitCommitStrategyGitServiceMock) GetTag() (output string) {
-	args := mock.Called()
-	return args.String(0)
-}
 
 var testMatches = map[string]string{
 	"[fix]":     Patch,
@@ -69,7 +46,7 @@ func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			var want = test.Want
 
-			var service = NewGitCommitStrategyGitServiceMock()
+			var service = mocks.NewMockGitService()
 			var gitCommitStrategy = NewGitCommitStrategy(testMatches, service)
 			var got, err = gitCommitStrategy.GetMatchedStrategy(test.Message)
 
@@ -91,7 +68,7 @@ func TestGitCommitStrategy_GetMatchedStrategy(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			var want = fmt.Sprintf(`could not match a strategy to the commit message "%s"`, test.Message)
 
-			var service = NewGitCommitStrategyGitServiceMock()
+			var service = mocks.NewMockGitService()
 			var gitCommitStrategy = NewGitCommitStrategy(testMatches, service)
 			var _, err = gitCommitStrategy.GetMatchedStrategy(test.Message)
 
@@ -122,7 +99,7 @@ func TestGitCommitStrategy_Increment(t *testing.T) {
 		t.Run(test.Name, func(t *testing.T) {
 			var want = test.Want
 
-			var service = NewGitCommitStrategyGitServiceMock()
+			var service = mocks.NewMockGitService()
 			service.On("GetLatestCommitMessage").Return(test.Message, nil)
 
 			var gitCommitStrategy = NewGitCommitStrategy(testMatches, service)
@@ -150,7 +127,7 @@ func TestGitCommitStrategy_Increment(t *testing.T) {
 
 	for _, test := range errorTests {
 		t.Run(test.Name, func(t *testing.T) {
-			var service = NewGitCommitStrategyGitServiceMock()
+			var service = mocks.NewMockGitService()
 			service.On("GetLatestCommitMessage").Return(test.Message, test.GitError)
 
 			var gitCommitStrategy = NewGitCommitStrategy(testMatches, service)

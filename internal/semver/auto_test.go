@@ -4,22 +4,9 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/restechnica/anyreleaser/internal/mocks"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
-
-type gitCommitStrategyMock struct {
-	mock.Mock
-}
-
-func NewGitCommitStrategyMock() *gitCommitStrategyMock {
-	return &gitCommitStrategyMock{}
-}
-
-func (mock *gitCommitStrategyMock) Increment(targetVersion string) (nextVersion string, err error) {
-	args := mock.Called(targetVersion)
-	return args.String(0), args.Error(1)
-}
 
 func TestAutoStrategy_AutoConstant(t *testing.T) {
 	t.Run("CheckConstant", func(t *testing.T) {
@@ -35,7 +22,7 @@ func TestAutoStrategy_Increment(t *testing.T) {
 		const target = "0.0.0"
 		const want = "1.0.0"
 
-		var gitCommitStrategy = NewGitCommitStrategyMock()
+		var gitCommitStrategy = mocks.NewMockSemverStrategy()
 		gitCommitStrategy.On("Increment", target).Return(want, nil)
 
 		var autoStrategy = NewAutoStrategy(gitCommitStrategy)
@@ -49,7 +36,7 @@ func TestAutoStrategy_Increment(t *testing.T) {
 		const target = "0.0.0"
 		const want = "0.0.1"
 
-		var gitCommitStrategy = NewGitCommitStrategyMock()
+		var gitCommitStrategy = mocks.NewMockSemverStrategy()
 		gitCommitStrategy.On("Increment", target).Return("", fmt.Errorf("some-error"))
 
 		var autoStrategy = NewAutoStrategy(gitCommitStrategy)
@@ -71,7 +58,7 @@ func TestAutoStrategy_Increment(t *testing.T) {
 
 	for _, test := range errorTests {
 		t.Run(test.Name, func(t *testing.T) {
-			var gitCommitStrategy = NewGitCommitStrategyMock()
+			var gitCommitStrategy = mocks.NewMockSemverStrategy()
 			gitCommitStrategy.On("Increment", test.Version).Return("", fmt.Errorf("some-error"))
 
 			var autoStrategy = NewAutoStrategy(gitCommitStrategy)

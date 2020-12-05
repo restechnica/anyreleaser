@@ -5,27 +5,15 @@ import (
 	"testing"
 
 	"github.com/restechnica/anyreleaser/internal/app"
+	"github.com/restechnica/anyreleaser/internal/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
 
-type testPipelineFakePipe struct {
-	mock.Mock
-}
-
-func newTestPipelineFakePipe() *testPipelineFakePipe {
-	return &testPipelineFakePipe{}
-}
-
-func (mock *testPipelineFakePipe) Run(ctx *app.Context) error {
-	var args = mock.Called(ctx)
-	return args.Error(0)
-}
-
 func TestPipeline_Add(t *testing.T) {
 	t.Run("CheckAddedPipe", func(t *testing.T) {
 		var pipeline = Pipeline{}
-		var want = newTestPipelineFakePipe()
+		var want = mocks.NewMockFlowPipe()
 
 		pipeline.Add(want)
 		var got = pipeline.Pipes[0]
@@ -37,7 +25,7 @@ func TestPipeline_Add(t *testing.T) {
 		var want error = nil
 		var pipeline = Pipeline{}
 
-		var pipe = newTestPipelineFakePipe()
+		var pipe = mocks.NewMockFlowPipe()
 		pipe.On("Run", mock.Anything).Return(want)
 
 		pipeline.Add(pipe)
@@ -51,7 +39,7 @@ func TestPipeline_Add(t *testing.T) {
 		var want = fmt.Errorf("some-error")
 		var pipeline = Pipeline{}
 
-		var pipe = newTestPipelineFakePipe()
+		var pipe = mocks.NewMockFlowPipe()
 		pipe.On("Run", mock.Anything).Return(want)
 
 		pipeline.Add(pipe)
