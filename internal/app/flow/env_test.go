@@ -5,11 +5,11 @@ import (
 	"os"
 	"testing"
 
-	"github.com/stretchr/testify/mock"
-
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"
+	"github.com/restechnica/anyreleaser/internal/mocks"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
 )
 
 func TestLoadEnvFiles_Run(t *testing.T) {
@@ -73,28 +73,10 @@ func TestLoadEnvFiles_Run(t *testing.T) {
 	})
 }
 
-type testLoadEnvScriptsCommanderMock struct {
-	mock.Mock
-}
-
-func NewTestLoadEnvScriptsCommanderMock() *testLoadEnvScriptsCommanderMock {
-	return &testLoadEnvScriptsCommanderMock{}
-}
-
-func (mock *testLoadEnvScriptsCommanderMock) Output(name string, arg ...string) (string, error) {
-	args := mock.Called(name, arg)
-	return args.String(0), args.Error(1)
-}
-
-func (mock *testLoadEnvScriptsCommanderMock) Run(name string, arg ...string) error {
-	args := mock.Called(name, arg)
-	return args.Error(0)
-}
-
 func TestLoadEnvScripts_Run(t *testing.T) {
 	t.Run("LoadSeveralEnvScriptsAndCheckEnvVars", func(t *testing.T) {
 		var pipe = LoadEnvScripts{}
-		var cmder = NewTestLoadEnvScriptsCommanderMock()
+		var cmder = mocks.NewMockCommander()
 
 		cmder.On("Output", "python3", mock.Anything).Return("some_key=some_value", nil)
 		cmder.On("Output", "node", mock.Anything).Return("another_key=another_value", nil)
@@ -121,7 +103,7 @@ func TestLoadEnvScripts_Run(t *testing.T) {
 
 	t.Run("LoadEmptyEnvScriptAndCheckEnvVars", func(t *testing.T) {
 		var pipe = LoadEnvScripts{}
-		var cmder = NewTestLoadEnvScriptsCommanderMock()
+		var cmder = mocks.NewMockCommander()
 
 		cmder.On("Output", "python3", mock.Anything).Return("", nil)
 
@@ -136,7 +118,7 @@ func TestLoadEnvScripts_Run(t *testing.T) {
 
 	t.Run("LoadEnvScriptWithCommanderErrorAndReturnError", func(t *testing.T) {
 		var pipe = LoadEnvScripts{}
-		var cmder = NewTestLoadEnvScriptsCommanderMock()
+		var cmder = mocks.NewMockCommander()
 
 		var want = fmt.Errorf("failed to run 'python3 some-script'")
 		cmder.On("Output", "python3", mock.Anything).Return("", want)
@@ -152,7 +134,7 @@ func TestLoadEnvScripts_Run(t *testing.T) {
 
 	t.Run("LoadEnvScriptWithScriptOutputErrorAndReturnError", func(t *testing.T) {
 		var pipe = LoadEnvScripts{}
-		var cmder = NewTestLoadEnvScriptsCommanderMock()
+		var cmder = mocks.NewMockCommander()
 
 		var want = fmt.Errorf("failed to parse output from 'python3 some-script'")
 		cmder.On("Output", "python3", mock.Anything).Return("faulty output", nil)
@@ -168,7 +150,7 @@ func TestLoadEnvScripts_Run(t *testing.T) {
 
 	t.Run("LoadEnvScriptWithEmptyKeyOutputAndReturnError", func(t *testing.T) {
 		var pipe = LoadEnvScripts{}
-		var cmder = NewTestLoadEnvScriptsCommanderMock()
+		var cmder = mocks.NewMockCommander()
 
 		var want = fmt.Errorf("could not set env var '=some_value' from 'python3 some-script'")
 		cmder.On("Output", "python3", mock.Anything).Return(" =some_value", nil)

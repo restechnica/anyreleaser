@@ -5,33 +5,16 @@ import (
 
 	"github.com/restechnica/anyreleaser/internal/app"
 	"github.com/restechnica/anyreleaser/internal/app/config"
+	"github.com/restechnica/anyreleaser/internal/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )
-
-type testLoadConfigLoaderMock struct {
-	mock.Mock
-}
-
-func newTestLoadConfigLoaderMock() *testLoadConfigLoaderMock {
-	return &testLoadConfigLoaderMock{}
-}
-
-func (mock *testLoadConfigLoaderMock) Load(path string) (cfg config.Root, err error) {
-	var args = mock.Called(path)
-	return args.Get(0).(config.Root), args.Error(1)
-}
-
-func (mock *testLoadConfigLoaderMock) Overload(path string, cfg config.Root) (config.Root, error) {
-	var args = mock.Called(path, cfg)
-	return args.Get(0).(config.Root), args.Error(1)
-}
 
 func TestLoadConfig_Run(t *testing.T) {
 	t.Run("CheckOverloadedConfig", func(t *testing.T) {
 		var want = config.Root{Git: config.Git{Unshallow: true}}
 
-		var loader = newTestLoadConfigLoaderMock()
+		var loader = mocks.NewMockConfigLoader()
 		loader.On("Overload", mock.Anything, mock.Anything).Return(want, nil)
 
 		var ctx = app.NewContext()
