@@ -1,6 +1,7 @@
 package get
 
 import (
+	"github.com/restechnica/anyreleaser/cmd/get/log"
 	"github.com/restechnica/anyreleaser/cmd/get/version"
 	"github.com/urfave/cli/v2"
 )
@@ -18,6 +19,7 @@ var (
 // Returns the CLI command.
 func NewCommand(app *cli.App) *cli.Command {
 	var subcommands = []*cli.Command{
+		log.NewCommand(app),
 		version.NewCommand(app),
 	}
 
