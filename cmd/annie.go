@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/restechnica/anyreleaser/cmd/create"
 	"github.com/restechnica/anyreleaser/cmd/get"
 	"github.com/restechnica/anyreleaser/cmd/predict"
 	"github.com/restechnica/anyreleaser/cmd/release"
@@ -41,6 +42,7 @@ func NewApp() (app *cli.App) {
 	}
 
 	app.Commands = []*cli.Command{
+		create.NewCommand(app),
 		get.NewCommand(app),
 		predict.NewCommand(app),
 		release.NewCommand(app),
